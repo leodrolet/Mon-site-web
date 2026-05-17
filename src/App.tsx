@@ -4,7 +4,6 @@ import Hero from './components/Hero';
 import { About, Services } from './components/AboutServices';
 import WhyLandingPage from './components/WhyLandingPage';
 import BeforeAfter from './components/BeforeAfter';
-import SocialProof from './components/SocialProof';
 import Process from './components/Process';
 import ContactForm from './components/ContactForm';
 import FinalCTA from './components/FinalCTA';
@@ -21,8 +20,7 @@ function App() {
         <BeforeAfter />
         <About />
         <Services />
-        <SocialProof />
-        <Process />
+<Process />
         <ContactForm />
         <FinalCTA />
       </main>
