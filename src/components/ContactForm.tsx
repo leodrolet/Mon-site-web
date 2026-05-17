@@ -143,10 +143,10 @@ const ContactForm = () => {
                 name="budget"
                 className="w-full px-4 py-3 rounded-xl bg-primary border border-white/10 text-white focus:border-accent outline-none transition-all appearance-none"
               >
-                <option>500€ - 1000€</option>
-                <option>1000€ - 3000€</option>
-                <option>3000€ - 5000€</option>
-                <option>5000€ +</option>
+                <option>$500 - $1000</option>
+                <option>$1000 - $3000</option>
+                <option>$3000 - $5000</option>
+                <option>$5000 +</option>
               </select>
             </div>
 
