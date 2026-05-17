@@ -65,7 +65,7 @@ const Hero = () => {
                 <div className="w-3 h-3 rounded-full bg-green-500/50" />
               </div>
               <div className="flex items-center justify-center h-full text-gray-600 font-medium italic">
-                [ Aperçu de votre future Landing Page Haute-Conversion ]
+                {/* Placeholder removed */}
               </div>
               {/* Visual Decoration */}
               <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-orange-500/10 to-transparent" />
