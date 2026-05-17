@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code, Laptop, Smartphone, RefreshCw, Paintbrush, Settings, CheckCircle } from 'lucide-react';
+import { Code, Laptop, Smartphone, RefreshCw, Paintbrush, Settings, CheckCircle, TrendingUp, Zap } from 'lucide-react';
 
 export const About = () => {
   return (
