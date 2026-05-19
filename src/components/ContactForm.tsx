@@ -81,8 +81,7 @@ const FieldError = ({ msg }: { msg: string }) => (
 // ── Main component ────────────────────────────────────────────────────────────
 const INITIAL = {
   full_name: '', email: '', phone: '', company: '',
-  site_type: 'Landing Page', budget: 'À déterminer',
-  deadline: 'Standard (1 mois)', description: '',
+  site_type: 'Landing Page', description: '',
 };
 
 const ContactForm = () => {
@@ -98,12 +97,6 @@ const ContactForm = () => {
     const { name, value } = e.target;
     setFields(f => ({ ...f, [name]: value }));
     if (touched[name]) setErrors(err => ({ ...err, [name]: validate(name, value) }));
-  };
-
-  const onBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setTouched(t => ({ ...t, [name]: true }));
-    setErrors(err => ({ ...err, [name]: validate(name, value) }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -264,7 +257,7 @@ const ContactForm = () => {
                     <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Nom complet *</label>
                     <input
                       name="full_name" type="text" value={fields.full_name}
-                      onChange={onChange} onBlur={onBlur}
+                      onChange={onChange}
                       placeholder="Jean Tremblay"
                       className={fieldBase(!!(errors.full_name && touched.full_name))}
                     />
@@ -274,7 +267,7 @@ const ContactForm = () => {
                     <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Email *</label>
                     <input
                       name="email" type="email" value={fields.email}
-                      onChange={onChange} onBlur={onBlur}
+                      onChange={onChange}
                       placeholder="jean@entreprise.com"
                       className={fieldBase(!!(errors.email && touched.email))}
                     />
@@ -288,7 +281,7 @@ const ContactForm = () => {
                     <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Téléphone *</label>
                     <input
                       name="phone" type="tel" value={fields.phone}
-                      onChange={onChange} onBlur={onBlur}
+                      onChange={onChange}
                       placeholder="514 000-0000"
                       className={fieldBase(!!(errors.phone && touched.phone))}
                     />
@@ -298,7 +291,7 @@ const ContactForm = () => {
                     <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Entreprise *</label>
                     <input
                       name="company" type="text" value={fields.company}
-                      onChange={onChange} onBlur={onBlur}
+                      onChange={onChange}
                       placeholder="Ma Compagnie Inc."
                       className={fieldBase(!!(errors.company && touched.company))}
                     />
@@ -306,56 +299,20 @@ const ContactForm = () => {
                   </div>
                 </div>
 
-                {/* Row 3: Type + Budget */}
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Type de projet</label>
-                    <div className="relative">
-                      <select
-                        name="site_type" value={fields.site_type}
-                        onChange={onChange}
-                        className={`${fieldBase(false)} appearance-none pr-10 cursor-pointer`}
-                      >
-                        <option>Landing Page</option>
-                        <option>Site Web Complet</option>
-                        <option>Site Vitrine</option>
-                        <option>Refonte Complète</option>
-                        <option>Autre</option>
-                      </select>
-                      <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Budget</label>
-                    <div className="relative">
-                      <select
-                        name="budget" value={fields.budget}
-                        onChange={onChange}
-                        className={`${fieldBase(false)} appearance-none pr-10 cursor-pointer`}
-                      >
-                        <option>À déterminer</option>
-                        <option>Moins de 1 000 $</option>
-                        <option>1 000 $ – 1 500 $</option>
-                        <option>1 500 $ – 2 500 $</option>
-                        <option>2 500 $ +</option>
-                      </select>
-                      <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Row 4: Deadline */}
+                {/* Row 3: Type de projet */}
                 <div>
-                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Délai souhaité</label>
+                  <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 block">Type de projet</label>
                   <div className="relative">
                     <select
-                      name="deadline" value={fields.deadline}
+                      name="site_type" value={fields.site_type}
                       onChange={onChange}
                       className={`${fieldBase(false)} appearance-none pr-10 cursor-pointer`}
                     >
-                      <option>Urgent (&lt; 2 semaines)</option>
-                      <option>Standard (1 mois)</option>
-                      <option>Flexible (2 mois +)</option>
+                      <option>Landing Page</option>
+                      <option>Site Web Complet</option>
+                      <option>Site Vitrine</option>
+                      <option>Refonte Complète</option>
+                      <option>Autre</option>
                     </select>
                     <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
                   </div>
@@ -371,7 +328,7 @@ const ContactForm = () => {
                   </div>
                   <textarea
                     name="description" value={fields.description}
-                    onChange={onChange} onBlur={onBlur}
+                    onChange={onChange}
                     maxLength={500} rows={4}
                     placeholder="Décrivez vos objectifs, vos fonctionnalités souhaitées et vos inspirations..."
                     className={`${fieldBase(!!(errors.description && touched.description))} resize-none`}
