@@ -20,6 +20,9 @@ const Hero = () => {
           <span className="px-4 py-2 rounded-full glass text-xs font-medium text-orange-400 mb-6 inline-block">
             L'art de la conversion
           </span>
+          <div className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
+            NOVIO<span className="text-gradient">STUDIO</span>
+          </div>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight">
             Votre entreprise mérite <br className="hidden md:block" />
             <span className="text-gradient">une présence digitale d'élite.</span>
