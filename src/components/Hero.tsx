@@ -1,11 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, TrendingUp, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, Clock, Star, Briefcase } from 'lucide-react';
 
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-black">
-      {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 -left-10 w-72 h-72 bg-orange-500/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl animate-pulse delay-700" />
@@ -20,16 +19,52 @@ const Hero = () => {
           <span className="px-4 py-2 rounded-full glass text-xs font-medium text-orange-400 mb-6 inline-block">
             L'art de la conversion
           </span>
+
           <div className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
             NOVIO<span className="text-gradient">STUDIO</span>
           </div>
+
+          {/* Social proof line */}
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <div className="flex -space-x-2">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-black flex items-center justify-center text-[10px] font-bold text-white">
+                  {['J','M','S','A'][i]}
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center gap-1 text-yellow-400 text-xs">
+              {[...Array(5)].map((_, i) => <Star key={i} size={11} fill="currentColor" />)}
+            </div>
+            <span className="text-gray-400 text-xs">Fait confiance par <span className="text-white font-semibold">10+ entreprises</span> québécoises</span>
+          </div>
+
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight">
             Votre entreprise mérite <br className="hidden md:block" />
             <span className="text-gradient">une présence digitale d'élite.</span>
           </h1>
-          <p className="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-10 leading-relaxed">
+
+          <p className="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-4 leading-relaxed">
             Que ce soit une landing page haute conversion ou un site web complet, je crée des expériences digitales qui transforment vos visiteurs en clients fidèles.
           </p>
+
+          {/* Pricing & delivery friction reducer */}
+          <div className="flex items-center justify-center gap-6 mb-10 text-sm">
+            <span className="flex items-center gap-1.5 text-gray-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
+              À partir de <span className="text-white font-bold ml-1">899 $</span>
+            </span>
+            <span className="text-gray-700">|</span>
+            <span className="flex items-center gap-1.5 text-gray-400">
+              <Clock size={13} className="text-orange-400" />
+              Livraison en <span className="text-white font-bold ml-1">14 jours</span>
+            </span>
+            <span className="text-gray-700">|</span>
+            <span className="flex items-center gap-1.5 text-gray-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-400 inline-block" />
+              Devis <span className="text-white font-bold ml-1">gratuit</span>
+            </span>
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
             <motion.a
@@ -38,7 +73,7 @@ const Hero = () => {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-accent text-white rounded-full font-bold flex items-center justify-center gap-2 hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/20"
             >
-              Lancer mon projet <ArrowRight size={18} />
+              Obtenir mon site en 14 jours <ArrowRight size={18} />
             </motion.a>
             <motion.a
               href="#why"
@@ -51,19 +86,33 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* Mockup & Stats Section */}
+        {/* Stats Cards */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.8 }}
           className="relative max-w-5xl mx-auto"
         >
-          {/* Floating Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             {[
-              { icon: <TrendingUp className="text-orange-400" />, label: 'Conversions', value: '+150%', detail: 'Taux de conversion moyen' },
-              { icon: <ShieldCheck className="text-orange-400" />, label: 'Crédibilité', value: 'Haut de Gamme', detail: 'Image de marque premium' },
-              { icon: <Users className="text-red-400" />, label: 'Clients', value: 'Flux Continu', detail: 'Génération de leads 24/7' },
+              {
+                icon: <Briefcase className="text-orange-400" size={22} />,
+                value: '10+',
+                label: 'Projets livrés',
+                detail: 'Sites web et landing pages',
+              },
+              {
+                icon: <Star className="text-yellow-400" size={22} fill="currentColor" />,
+                value: '5 / 5',
+                label: 'Satisfaction client',
+                detail: 'Note moyenne sur tous les projets',
+              },
+              {
+                icon: <Clock className="text-orange-400" size={22} />,
+                value: '14 jours',
+                label: 'Délai de livraison',
+                detail: 'De la validation au site en ligne',
+              },
             ].map((stat, idx) => (
               <motion.div
                 key={idx}
