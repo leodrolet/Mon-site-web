@@ -47,7 +47,7 @@ const Pricing = () => {
               <span className="text-gray-500 text-lg">à partir de</span>
             </div>
             <div className="flex items-baseline gap-2 mb-8">
-              <span className="text-6xl font-black text-white">1 200</span>
+              <span className="text-6xl font-black text-white">899</span>
               <span className="text-3xl font-bold text-accent">$</span>
             </div>
 
