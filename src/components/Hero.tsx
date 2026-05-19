@@ -24,21 +24,6 @@ const Hero = () => {
             NOVIO<span className="text-gradient">STUDIO</span>
           </div>
 
-          {/* Social proof line */}
-          <div className="flex items-center justify-center gap-2 mb-6">
-            <div className="flex -space-x-2">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-black flex items-center justify-center text-[10px] font-bold text-white">
-                  {['J','M','S','A'][i]}
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center gap-1 text-yellow-400 text-xs">
-              {[...Array(5)].map((_, i) => <Star key={i} size={11} fill="currentColor" />)}
-            </div>
-            <span className="text-gray-400 text-xs">Fait confiance par <span className="text-white font-semibold">10+ entreprises</span> québécoises</span>
-          </div>
-
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight">
             Votre entreprise mérite <br className="hidden md:block" />
             <span className="text-gradient">une présence digitale d'élite.</span>
