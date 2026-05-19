@@ -18,9 +18,9 @@ const Navbar = () => {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="text-2xl font-bold tracking-tighter"
+          className="flex items-center"
         >
-          NOVIO<span className="text-gradient">STUDIO</span>
+          <img src="/logo.png" alt="Novio Studio" className="h-12 w-auto" />
         </motion.div>
 
         <div className="hidden md:flex items-center gap-8">
