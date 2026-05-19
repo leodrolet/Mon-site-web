@@ -6,7 +6,7 @@ const plans = [
   {
     name: "Landing Page Professionnelle",
     price: "899",
-    popular: false,
+    popular: true,
     features: [
       "Design premium sur mesure",
       "Optimisation mobile complète",
@@ -19,7 +19,7 @@ const plans = [
   {
     name: "Site Web Complet",
     price: "1 199",
-    popular: true,
+    popular: false,
     features: [
       "Tout inclus dans la Landing Page",
       "Jusqu'à 5 pages personnalisées",
