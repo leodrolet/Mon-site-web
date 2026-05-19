@@ -5,17 +5,30 @@ import { ArrowRight, TrendingUp, ShieldCheck, Users } from 'lucide-react';
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 const Hero = () => {
-  const h1Ref = useRef<HTMLHeadingElement>(null);
-  const blobsRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
+  const blobsRef  = useRef<HTMLDivElement>(null);
+  const badgeRef  = useRef<HTMLSpanElement>(null);
+  const brandRef  = useRef<HTMLDivElement>(null);
+  const h1Ref     = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const ctasRef   = useRef<HTMLDivElement>(null);
+  const statsRef  = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState(0);
 
-  // Parallax on mousemove
+  // Multi-layer parallax
   useEffect(() => {
     if (window.matchMedia('(hover: none)').matches) return;
 
     const section = document.getElementById('home');
     if (!section) return;
+
+    const layers = [
+      { ref: blobsRef,    xF:  0.030, yF:  0.025 },
+      { ref: badgeRef,    xF: -0.025, yF: -0.018 },
+      { ref: brandRef,    xF: -0.020, yF: -0.015 },
+      { ref: h1Ref,       xF: -0.015, yF: -0.010 },
+      { ref: subtitleRef, xF: -0.010, yF: -0.007 },
+      { ref: ctasRef,     xF: -0.008, yF: -0.005 },
+    ];
 
     let rafId: number;
 
@@ -26,29 +39,24 @@ const Hero = () => {
       const dy = e.clientY - cy;
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        if (h1Ref.current) {
-          h1Ref.current.style.willChange = 'transform';
-          h1Ref.current.style.transition = 'transform 0.1s linear';
-          h1Ref.current.style.transform = `translate(${-dx * 0.015}px, ${-dy * 0.015}px)`;
-        }
-        if (blobsRef.current) {
-          blobsRef.current.style.willChange = 'transform';
-          blobsRef.current.style.transition = 'transform 0.1s linear';
-          blobsRef.current.style.transform = `translate(${dx * 0.025}px, ${dy * 0.025}px)`;
-        }
+        layers.forEach(({ ref, xF, yF }) => {
+          const el = ref.current;
+          if (!el) return;
+          el.style.willChange = 'transform';
+          el.style.transition = 'transform 0.1s linear';
+          el.style.transform = `translate(${dx * xF}px, ${dy * yF}px)`;
+        });
       });
     };
 
     const onLeave = () => {
       cancelAnimationFrame(rafId);
-      if (h1Ref.current) {
-        h1Ref.current.style.transition = 'transform 0.4s ease';
-        h1Ref.current.style.transform = 'translate(0, 0)';
-      }
-      if (blobsRef.current) {
-        blobsRef.current.style.transition = 'transform 0.4s ease';
-        blobsRef.current.style.transform = 'translate(0, 0)';
-      }
+      layers.forEach(({ ref }) => {
+        const el = ref.current;
+        if (!el) return;
+        el.style.transition = 'transform 0.4s ease';
+        el.style.transform = 'translate(0, 0)';
+      });
     };
 
     window.addEventListener('mousemove', onMove, { passive: true });
@@ -61,7 +69,7 @@ const Hero = () => {
     };
   }, []);
 
-  // Animated counter for +150%
+  // Animated counter — fires on scroll into view
   useEffect(() => {
     const el = statsRef.current;
     if (!el) return;
@@ -83,7 +91,7 @@ const Hero = () => {
 
         requestAnimationFrame(animate);
       },
-      { threshold: 0.5 }
+      { threshold: 0.3 }
     );
 
     observer.observe(el);
@@ -91,70 +99,78 @@ const Hero = () => {
   }, []);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-black">
-      <div ref={blobsRef} className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 -left-10 w-72 h-72 bg-orange-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl animate-pulse delay-700" />
-      </div>
+    <div id="home">
+      {/* ── Main hero — full viewport ── */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-black">
+        {/* Background blobs — fastest layer, follows cursor */}
+        <div ref={blobsRef} className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-1/4 -left-10 w-72 h-72 bg-orange-500/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-red-500/20 rounded-full blur-3xl animate-pulse delay-700" />
+        </div>
 
-      <div className="container mx-auto px-6 relative z-10 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className="px-4 py-2 rounded-full glass text-xs font-medium text-orange-400 mb-6 inline-block">
-            L'art de la conversion
-          </span>
-
-          <div className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
-            NOVIO<span className="text-gradient">STUDIO</span>
-          </div>
-
-          <h1
-            ref={h1Ref}
-            className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight"
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            Votre entreprise mérite <br className="hidden md:block" />
-            <span className="text-gradient">une présence digitale d'élite.</span>
-          </h1>
+            {/* Badge — fastest text layer, opposite */}
+            <span
+              ref={badgeRef}
+              className="px-4 py-2 rounded-full glass text-xs font-medium text-orange-400 mb-6 inline-block"
+            >
+              L'art de la conversion
+            </span>
 
-          <p className="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-10 leading-relaxed">
-            Que ce soit une landing page haute conversion ou un site web complet, je crée des expériences digitales qui transforment vos visiteurs en clients fidèles.
-          </p>
+            {/* Brand name */}
+            <div ref={brandRef} className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
+              NOVIO<span className="text-gradient">STUDIO</span>
+            </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
-            {/* btn-magnetic wrapper — outer div translates, inner motion.a scales */}
-            <div className="btn-magnetic inline-block">
+            {/* H1 — mid-speed, opposite */}
+            <h1
+              ref={h1Ref}
+              className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight"
+            >
+              Votre entreprise mérite <br className="hidden md:block" />
+              <span className="text-gradient">une présence digitale d'élite.</span>
+            </h1>
+
+            {/* Subtitle — slowest text layer */}
+            <p
+              ref={subtitleRef}
+              className="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-10 leading-relaxed"
+            >
+              Que ce soit une landing page haute conversion ou un site web complet, je crée des expériences digitales qui transforment vos visiteurs en clients fidèles.
+            </p>
+
+            {/* CTAs — very slight opposite movement */}
+            <div ref={ctasRef} className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
                 href="#contact"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-accent text-white rounded-full font-bold flex items-center justify-center gap-2 hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/20"
+                className="px-8 py-4 bg-accent text-white rounded-full font-bold flex items-center justify-center gap-2 hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/20"
               >
                 Lancer mon projet <ArrowRight size={18} />
               </motion.a>
-            </div>
-            <div className="btn-magnetic inline-block">
               <motion.a
                 href="#why"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 glass text-white rounded-full font-bold flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
+                className="px-8 py-4 glass text-white rounded-full font-bold flex items-center justify-center gap-2 hover:bg-white/10 transition-all"
               >
                 En savoir plus
               </motion.a>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="relative max-w-5xl mx-auto"
-        >
-          <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+      {/* ── Stats — below the fold, animates on scroll ── */}
+      <section className="py-20 bg-black">
+        <div className="container mx-auto px-6">
+          <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               {
                 icon: <TrendingUp className="text-orange-400" />,
@@ -177,8 +193,12 @@ const Hero = () => {
             ].map((stat, idx) => (
               <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
                 whileHover={{ y: -5 }}
-                className="glass p-6 rounded-2xl text-left transition-all"
+                className="glass p-6 rounded-2xl text-left"
               >
                 <div className="mb-4">{stat.icon}</div>
                 <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
@@ -187,9 +207,9 @@ const Hero = () => {
               </motion.div>
             ))}
           </div>
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
   );
 };
 

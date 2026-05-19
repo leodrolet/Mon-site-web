@@ -95,16 +95,14 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <div className="btn-magnetic w-full">
-                  <motion.a
-                    href="#contact"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="w-full py-4 bg-accent text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20"
-                  >
-                    Démarrer mon projet <ArrowRight size={18} />
-                  </motion.a>
-                </div>
+                <motion.a
+                  href="#contact"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full py-4 bg-accent text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20"
+                >
+                  Démarrer mon projet <ArrowRight size={18} />
+                </motion.a>
 
                 <p className="text-center text-gray-600 text-xs mt-4">
                   Devis personnalisé gratuit · Réponse sous 24h
