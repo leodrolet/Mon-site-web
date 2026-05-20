@@ -101,7 +101,7 @@ const Pricing = () => {
               <div className="relative z-10">
                 <p className="text-gray-400 text-sm uppercase tracking-widest mb-4">{plan.name}</p>
                 <div className="flex items-baseline gap-2 mb-8">
-                  <span className="text-6xl font-black text-white">{plan.price}</span>
+                  <span className="text-6xl font-black text-white whitespace-nowrap">{plan.price}</span>
                   <span className="text-3xl font-bold text-accent">$</span>
                 </div>
 
