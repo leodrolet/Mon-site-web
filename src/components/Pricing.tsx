@@ -87,7 +87,7 @@ const Pricing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.15 }}
-              className={`glass rounded-3xl p-10 relative overflow-hidden ${
+              className={`glass rounded-3xl p-10 relative overflow-hidden flex flex-col ${
                 plan.popular ? 'border-orange-500/40' : ''
               }`}
             >
@@ -98,14 +98,14 @@ const Pricing = () => {
               )}
               <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
 
-              <div className="relative z-10">
+              <div className="relative z-10 flex flex-col h-full">
                 <p className="text-gray-400 text-sm uppercase tracking-widest mb-4">{plan.name}</p>
                 <div className="flex items-baseline gap-2 mb-8">
                   <span className="text-6xl font-black text-white whitespace-nowrap">{plan.price}</span>
                   <span className="text-3xl font-bold text-accent">$</span>
                 </div>
 
-                <ul className="space-y-3 mb-10">
+                <ul className="space-y-3 mb-10 flex-1">
                   {plan.features.map((item, i) => (
                     <motion.li
                       key={i}
