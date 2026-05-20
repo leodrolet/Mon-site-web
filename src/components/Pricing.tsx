@@ -4,7 +4,7 @@ import { CheckCircle2, ArrowRight, Star } from 'lucide-react';
 
 const plans = [
   {
-    name: "Landing Page Professionnelle",
+    name: "Landing Page",
     price: "899",
     popular: true,
     features: [
@@ -17,16 +17,42 @@ const plans = [
     ],
   },
   {
-    name: "Site Web Complet",
-    price: "1 199",
+    name: "Site Vitrine",
+    price: "1 499",
     popular: false,
     features: [
       "Tout inclus dans la Landing Page",
       "Jusqu'à 5 pages personnalisées",
-      "Architecture d'information avancée",
       "SEO optimisé par page",
-      "Blog ou portfolio (optionnel)",
+      "Design sur mesure complet",
+      "Hébergement & mise en ligne",
+      "Support inclus",
+    ],
+  },
+  {
+    name: "Site Web Complet",
+    price: "2 499",
+    popular: false,
+    features: [
+      "Tout inclus dans le Site Vitrine",
+      "Architecture d'information avancée",
+      "Blog ou portfolio intégré",
+      "Intégrations avancées",
+      "SEO avancé multi-pages",
       "Support prioritaire inclus",
+    ],
+  },
+  {
+    name: "Refonte Complète",
+    price: "2 299",
+    popular: false,
+    features: [
+      "Audit complet de l'existant",
+      "Migration de contenu complète",
+      "Nouveau design from scratch",
+      "Optimisation des performances",
+      "SEO optimisé par page",
+      "Formation & documentation",
     ],
   },
 ];
@@ -53,7 +79,7 @@ const Pricing = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
