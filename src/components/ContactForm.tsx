@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, CheckCircle2, X, ChevronDown, Clock, Shield, Zap, MessageSquare } from 'lucide-react';
-
-const TOAST_DURATION = 5000;
+import { Send, CheckCircle2, ChevronDown, Clock, Shield, Zap, MessageSquare } from 'lucide-react';
 
 // ── Validation ──────────────────────────────────────────────────────────────
 const rules: Record<string, (v: string) => string> = {
@@ -14,51 +12,6 @@ const rules: Record<string, (v: string) => string> = {
 };
 
 const validate = (name: string, value: string) => rules[name]?.(value) ?? '';
-
-// ── Toast ────────────────────────────────────────────────────────────────────
-const SuccessToast = ({ onClose }: { onClose: () => void }) => {
-  const [progress, setProgress] = useState(100);
-
-  useEffect(() => {
-    const start = Date.now();
-    const iv = setInterval(() => {
-      const p = Math.max(0, 100 - ((Date.now() - start) / TOAST_DURATION) * 100);
-      setProgress(p);
-      if (p === 0) clearInterval(iv);
-    }, 30);
-    const t = setTimeout(onClose, TOAST_DURATION);
-    return () => { clearInterval(iv); clearTimeout(t); };
-  }, [onClose]);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -80, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -80, scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm overflow-hidden rounded-2xl shadow-2xl"
-      style={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)' }}
-    >
-      <div className="flex items-start gap-4 p-5">
-        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-          <CheckCircle2 size={22} className="text-green-400" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-bold text-white text-sm">Demande envoyée !</p>
-          <p className="text-gray-400 text-xs mt-1 leading-relaxed">
-            Je vous recontacte sous 24h avec une proposition personnalisée.
-          </p>
-        </div>
-        <button onClick={onClose} aria-label="Fermer la notification" className="flex-shrink-0 text-gray-500 hover:text-white transition-colors">
-          <X size={16} />
-        </button>
-      </div>
-      <div className="h-0.5 bg-white/10">
-        <div className="h-full bg-green-400 transition-all ease-linear" style={{ width: `${progress}%`, transitionDuration: '30ms' }} />
-      </div>
-    </motion.div>
-  );
-};
 
 // ── Field components ─────────────────────────────────────────────────────────
 const fieldBase = (hasError: boolean) =>
@@ -91,7 +44,6 @@ const ContactForm = () => {
   const [loading, setLoading]     = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const [showToast, setShowToast] = useState(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -125,7 +77,7 @@ const ContactForm = () => {
         body: JSON.stringify(fields),
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       });
-      if (res.ok) { setSubmitted(true); setShowToast(true); }
+      if (res.ok) { setSubmitted(true); }
       else setServerError('Une erreur est survenue. Veuillez réessayer.');
     } catch {
       setServerError('Erreur de connexion. Vérifiez votre internet.');
@@ -145,7 +97,6 @@ const ContactForm = () => {
   if (submitted) {
     return (
       <>
-        <AnimatePresence>{showToast && <SuccessToast onClose={() => setShowToast(false)} />}</AnimatePresence>
         <section id="contact" className="py-24 bg-secondary/50">
           <div className="container mx-auto px-6">
             <motion.div
