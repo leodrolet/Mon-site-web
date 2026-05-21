@@ -10,7 +10,6 @@ import ContactForm from './components/ContactForm';
 import FinalCTA from './components/FinalCTA';
 import Footer from './components/Footer';
 import { smoothScrollTo } from './components/utils';
-import { BackgroundPaths } from './components/ui/background-paths';
 import './index.css';
 
 function App() {
@@ -28,8 +27,7 @@ function App() {
 
   return (
     <div className="min-h-screen selection:bg-orange-500 selection:text-white bg-black">
-      <BackgroundPaths />
-      <Navbar />
+<Navbar />
       <main>
         <Hero />
         <WhyLandingPage />
