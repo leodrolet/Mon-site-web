@@ -1,17 +1,11 @@
-"use client";
-
 import { motion, useScroll, useTransform } from "framer-motion";
-import React, { useRef } from "react";
+import React from "react";
 
 function FloatingPaths({ position }: { position: number }) {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start start", "end start"]
-    });
-
-    // On déplace les lignes vers le bas au fur et à mesure du scroll
-    const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+    // Track global window scroll — using a target ref inside overflow-hidden
+    // ancestors breaks Framer Motion's offset calculations.
+    const { scrollYProgress } = useScroll();
+    const y = useTransform(scrollYProgress, [0, 0.35], ["0%", "30%"]);
 
     const paths = Array.from({ length: 36 }, (_, i) => ({
         id: i,
@@ -26,7 +20,7 @@ function FloatingPaths({ position }: { position: number }) {
     }));
 
     return (
-        <div ref={ref} className="absolute inset-0 pointer-events-none overflow-hidden h-full w-full">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden h-full w-full">
             <motion.div style={{ y }} className="w-full h-full">
                 <svg
                     className="w-full h-full"
