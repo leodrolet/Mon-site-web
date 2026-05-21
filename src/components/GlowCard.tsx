@@ -75,7 +75,7 @@ const glowStyles = `
 `;
 
 const glowColorMap = {
-  orange: { base: 30, spread: 180 },
+  orange: { base: 30, spread: 20 },
   red:    { base: 0,  spread: 150 },
   blue:   { base: 220, spread: 200 },
   purple: { base: 280, spread: 300 },
