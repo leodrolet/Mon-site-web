@@ -10,9 +10,8 @@ function FloatingPaths({ position }: { position: number }) {
         offset: ["start start", "end start"]
     });
 
-    // Move paths down as the user scrolls down.
-    // 0% at start, 30% at the end of the section.
-    const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+    // On déplace les lignes vers le bas au fur et à mesure du scroll
+    const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
     const paths = Array.from({ length: 36 }, (_, i) => ({
         id: i,
@@ -32,7 +31,8 @@ function FloatingPaths({ position }: { position: number }) {
             <motion.div style={{ y }} className="w-full h-full">
                 <svg
                     className="w-full h-full text-orange-500"
-                    viewBox="0 0 696 316"
+                    // ViewBox élargi pour s'assurer que les coordonnées négatives et positives sont visibles
+                    viewBox="-500 -200 1200 1200"
                     fill="none"
                     style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
                 >
@@ -65,7 +65,7 @@ function FloatingPaths({ position }: { position: number }) {
 
 export function BackgroundPaths() {
     return (
-        <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <FloatingPaths position={1} />
             <FloatingPaths position={-1} />
         </div>
