@@ -20,7 +20,7 @@ const PROJECTS: Project[] = [
     num: '01',
     title: 'Studio One',
     type: 'Studio musical',
-    desc: "Site vitrine premium pour un studio d'enregistrement professionnel.",
+    desc: "Modèle de démonstration — site vitrine premium pour un studio d'enregistrement professionnel.",
     srcdoc: studioOneHtml,
     accentColor: '#a8a6c8',
   },
@@ -28,7 +28,7 @@ const PROJECTS: Project[] = [
     num: '02',
     title: 'Salon Gatineau',
     type: 'Salon esthétique',
-    desc: "Expérience luxueuse pour un salon d'esthétique haut de gamme.",
+    desc: "Modèle de démonstration — expérience luxueuse pour un salon d'esthétique haut de gamme.",
     srcdoc: salonGatineauHtml,
     accentColor: '#c4956a',
   },
@@ -36,7 +36,7 @@ const PROJECTS: Project[] = [
     num: '03',
     title: 'Garage Gatineau',
     type: 'Garage automobile',
-    desc: 'Site moderne pour un garage avec présentation des services.',
+    desc: 'Modèle de démonstration — site moderne pour un garage avec présentation des services.',
     srcdoc: garageGatineauHtml,
     accentColor: '#f97316',
   },
@@ -102,27 +102,43 @@ export const Portfolio = () => {
   const [active, setActive] = useState<Project | null>(null);
   const [iframeReady, setIframeReady] = useState(false);
 
+  // iframe back button
   useEffect(() => {
     const onMsg = (e: MessageEvent) => { if (e.data === 'closePortfolio') close(); };
     window.addEventListener('message', onMsg);
     return () => window.removeEventListener('message', onMsg);
   }, []);
 
+  // Escape key
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  // Browser back button — closes modal instead of navigating away
+  useEffect(() => {
+    const onPop = () => {
+      if (active) {
+        setActive(null);
+        document.body.style.overflow = '';
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [active]);
+
   function open(proj: Project) {
     setIframeReady(false);
     setActive(proj);
     document.body.style.overflow = 'hidden';
+    history.pushState({ portfolioModal: true }, ''); // capture browser back button
   }
 
   function close() {
     setActive(null);
     document.body.style.overflow = '';
+    if (history.state?.portfolioModal) history.back(); // pop the state we pushed
   }
 
   return (
@@ -149,8 +165,8 @@ export const Portfolio = () => {
               Entrez dans{' '}
               <span className="text-gradient">l'expérience</span>
             </h2>
-            <p className="text-gray-500 max-w-sm mx-auto text-sm leading-relaxed">
-              Trois projets réels. Cliquez pour naviguer dans le site complet.
+            <p className="text-gray-500 max-w-md mx-auto text-sm leading-relaxed">
+              Ces sites sont des <span className="text-gray-400">modèles de démonstration</span>. Cliquez sur une carte pour naviguer dans le site complet.
             </p>
           </motion.div>
 
