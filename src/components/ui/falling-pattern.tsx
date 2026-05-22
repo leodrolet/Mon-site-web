@@ -15,6 +15,8 @@ type FallingPatternProps = React.ComponentProps<'div'> & {
     blurIntensity?: string;
     /** Pattern density - affects spacing (default: 1) */
     density?: number;
+    /** Show the dot-grid overlay (default: true) */
+    showOverlay?: boolean;
 };
 
 export function FallingPattern({
@@ -23,6 +25,7 @@ export function FallingPattern({
     duration = 150,
     blurIntensity = '1em',
     density = 1,
+    showOverlay = true,
     className,
 }: FallingPatternProps) {
     const generateBackgroundImage = () => {
@@ -117,14 +120,16 @@ export function FallingPattern({
                     animate="animate"
                 />
             </motion.div>
-            <div
-                className="absolute inset-0 z-1"
-                style={{
-                    backdropFilter: `blur(${blurIntensity})`,
-                    backgroundImage: `radial-gradient(circle at 50% 50%, transparent 0, transparent 2px, ${backgroundColor} 2px)`,
-                    backgroundSize: `${8 * density}px ${8 * density}px`,
-                }}
-            />
+            {showOverlay && (
+                <div
+                    className="absolute inset-0 z-1"
+                    style={{
+                        backdropFilter: `blur(${blurIntensity})`,
+                        backgroundImage: `radial-gradient(circle at 50% 50%, transparent 0, transparent 2px, ${backgroundColor} 2px)`,
+                        backgroundSize: `${8 * density}px ${8 * density}px`,
+                    }}
+                />
+            )}
         </div>
     );
 }

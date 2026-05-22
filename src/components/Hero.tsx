@@ -102,12 +102,13 @@ const Hero = () => {
         {/* Falling pattern background */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <FallingPattern
-            color="rgba(249, 115, 22, 0.55)"
+            color="rgba(249, 115, 22, 0.8)"
             backgroundColor="#000000"
             duration={120}
-            blurIntensity="1.5px"
+            blurIntensity="0px"
             density={1}
-            className="[mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,transparent_40%,black_100%)]"
+            showOverlay={false}
+            className="[mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]"
           />
         </div>
 
