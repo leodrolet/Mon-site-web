@@ -130,8 +130,6 @@ const ContactForm = () => {
 
   return (
     <>
-      <AnimatePresence>{showToast && <SuccessToast onClose={() => setShowToast(false)} />}</AnimatePresence>
-
       <section id="contact" className="py-24 bg-secondary/50">
         <div className="container mx-auto px-6">
 
