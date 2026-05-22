@@ -947,19 +947,25 @@ window.addEventListener('scroll', () => {
 })();
 </script>
 
+
+
 <style>
 #__back{
   position:fixed;bottom:28px;right:28px;z-index:99999;
   display:flex;align-items:center;gap:8px;
-  background:rgba(242,240,236,0.1);color:#F2F0EC;
-  border:1px solid rgba(242,240,236,0.25);
-  padding:10px 22px;border-radius:100px;
-  font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
-  cursor:pointer;backdrop-filter:blur(12px);
-  font-family:'DM Sans',system-ui,sans-serif;
-  transition:background 0.25s,border-color 0.25s,transform 0.2s;
+  background:#ff5500;color:#fff;border:none;
+  padding:11px 24px;border-radius:100px;
+  font-size:0.62rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 0 0 rgba(255,85,0,0.7), 0 4px 28px rgba(255,85,0,0.55);
+  font-family:system-ui,sans-serif;
+  animation:__pulse 2.4s ease-in-out infinite;
 }
-#__back:hover{background:rgba(242,240,236,0.18);border-color:rgba(242,240,236,0.5);transform:translateY(-2px);}
+@keyframes __pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,85,0,0.7),0 4px 28px rgba(255,85,0,0.4);}
+  50%{box-shadow:0 0 0 10px rgba(255,85,0,0),0 4px 28px rgba(255,85,0,0.6);}
+}
+#__back:hover{background:#ff3300;transform:translateY(-2px);animation:none;box-shadow:0 8px 40px rgba(255,85,0,0.7);}
 </style>
 <button id="__back" onclick="window.parent.postMessage('closePortfolio','*')">← Retour</button>
 

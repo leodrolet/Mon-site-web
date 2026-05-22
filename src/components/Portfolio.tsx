@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowUpRight } from 'lucide-react';
 
-// HTML bundled at build time — works on any host, no static file deployment needed
-import studioOneHtml    from '../../public/previews/studio-one.html?raw';
+import studioOneHtml     from '../../public/previews/studio-one.html?raw';
 import salonGatineauHtml from '../../public/previews/salon-gatineau/index.html?raw';
 import garageGatineauHtml from '../../public/previews/garage-gatineau/standalone.html?raw';
 
@@ -14,8 +13,6 @@ interface Project {
   desc: string;
   srcdoc: string;
   accentColor: string;
-  bgFrom: string;
-  bgTo: string;
 }
 
 const PROJECTS: Project[] = [
@@ -23,50 +20,96 @@ const PROJECTS: Project[] = [
     num: '01',
     title: 'Studio One',
     type: 'Studio musical',
-    desc: "Site vitrine premium pour un studio d'enregistrement professionnel à Gatineau.",
+    desc: "Site vitrine premium pour un studio d'enregistrement professionnel.",
     srcdoc: studioOneHtml,
     accentColor: '#a8a6c8',
-    bgFrom: '#0d0f1a',
-    bgTo: '#111827',
   },
   {
     num: '02',
     title: 'Salon Gatineau',
     type: 'Salon esthétique',
-    desc: "Expérience de luxe pour un salon d'esthétique haut de gamme. Design épuré et élégant.",
+    desc: "Expérience luxueuse pour un salon d'esthétique haut de gamme.",
     srcdoc: salonGatineauHtml,
     accentColor: '#c4956a',
-    bgFrom: '#110e08',
-    bgTo: '#1a1409',
   },
   {
     num: '03',
     title: 'Garage Gatineau',
     type: 'Garage automobile',
-    desc: 'Site moderne pour un garage automobile avec présentation des services.',
+    desc: 'Site moderne pour un garage avec présentation des services.',
     srcdoc: garageGatineauHtml,
     accentColor: '#f97316',
-    bgFrom: '#0f0d0b',
-    bgTo: '#1a1208',
   },
 ];
 
+/* ── Miniature live preview of a site ─────────────────────── */
+const SitePreview = ({ srcdoc, title }: { srcdoc: string; title: string }) => {
+  const wrapperRef  = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
+  const [scale, setScale] = useState(0.25);
+
+  // Lazy-load: only render iframe once card enters viewport
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setShow(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  // Compute scale from wrapper width
+  const measureScale = useCallback(() => {
+    if (wrapperRef.current) {
+      setScale(wrapperRef.current.offsetWidth / 1280);
+    }
+  }, []);
+
+  useEffect(() => {
+    measureScale();
+    window.addEventListener('resize', measureScale);
+    return () => window.removeEventListener('resize', measureScale);
+  }, [measureScale]);
+
+  const iframeH = Math.round(220 / scale); // enough to see top of site
+
+  return (
+    <div ref={wrapperRef} className="w-full h-full overflow-hidden relative bg-zinc-950">
+      {show && (
+        <iframe
+          srcdoc={srcdoc}
+          title={title}
+          sandbox="allow-scripts"
+          style={{
+            width: '1280px',
+            height: `${iframeH}px`,
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            pointerEvents: 'none',
+            border: 'none',
+            display: 'block',
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+/* ── Main Portfolio component ──────────────────────────────── */
 export const Portfolio = () => {
   const [active, setActive] = useState<Project | null>(null);
   const [iframeReady, setIframeReady] = useState(false);
 
-  // Listen for postMessage from iframes (back button click)
   useEffect(() => {
-    function onMessage(e: MessageEvent) {
-      if (e.data === 'closePortfolio') close();
-    }
-    window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
+    const onMsg = (e: MessageEvent) => { if (e.data === 'closePortfolio') close(); };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
   }, []);
 
-  // Escape key
   useEffect(() => {
-    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') close(); }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
@@ -121,52 +164,43 @@ export const Portfolio = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.55 }}
                 onClick={() => open(proj)}
-                className="group cursor-pointer rounded-2xl overflow-hidden border border-white/[0.06] hover:border-white/20 transition-all duration-500 hover:-translate-y-1"
+                className="group cursor-pointer rounded-2xl overflow-hidden border border-white/[0.06] hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+                style={{ '--accent': proj.accentColor } as React.CSSProperties}
               >
-                {/* Visual panel */}
-                <div
-                  className="h-48 relative overflow-hidden"
-                  style={{ background: `linear-gradient(135deg, ${proj.bgFrom} 0%, ${proj.bgTo} 100%)` }}
-                >
-                  <div
-                    className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                    style={{
-                      background: `radial-gradient(ellipse 80% 60% at 50% 60%, ${proj.accentColor}20 0%, transparent 70%)`,
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-                    <span
-                      className="text-[7rem] font-black leading-none opacity-[0.04] transition-opacity duration-500 group-hover:opacity-[0.08]"
-                      style={{ color: proj.accentColor }}
-                    >
-                      {proj.num}
-                    </span>
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/30 backdrop-blur-[2px]">
+                {/* ── Live preview area ── */}
+                <div className="h-52 relative overflow-hidden">
+                  <SitePreview srcdoc={proj.srcdoc} title={proj.title} />
+
+                  {/* Subtle dark gradient fade at bottom of preview */}
+                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-zinc-950 to-transparent pointer-events-none" />
+
+                  {/* Hover overlay with CTA */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-black/50 backdrop-blur-[3px]">
                     <div
-                      className="flex items-center gap-2 text-[0.6rem] font-semibold tracking-[0.3em] uppercase px-5 py-2.5 rounded-full border backdrop-blur-md"
+                      className="flex items-center gap-2 text-[0.62rem] font-semibold tracking-[0.3em] uppercase px-6 py-3 rounded-full border backdrop-blur-md transition-transform duration-200 group-hover:scale-105"
                       style={{
-                        borderColor: `${proj.accentColor}60`,
+                        borderColor: `${proj.accentColor}70`,
                         color: proj.accentColor,
-                        background: `${proj.accentColor}12`,
+                        background: `${proj.accentColor}15`,
+                        boxShadow: `0 0 24px ${proj.accentColor}25`,
                       }}
                     >
-                      <span>Entrer</span>
-                      <ArrowUpRight size={11} />
+                      <span>Entrer dans le site</span>
+                      <ArrowUpRight size={12} />
                     </div>
                   </div>
                 </div>
 
-                {/* Info */}
-                <div className="p-5 bg-secondary/70">
+                {/* ── Info ── */}
+                <div className="p-5 bg-zinc-950/90 border-t border-white/[0.05]">
                   <span
-                    className="text-[0.58rem] font-semibold uppercase tracking-[0.28em]"
+                    className="text-[0.56rem] font-semibold uppercase tracking-[0.3em]"
                     style={{ color: proj.accentColor }}
                   >
                     {proj.type}
                   </span>
-                  <h3 className="text-lg font-bold mt-1.5 mb-2 text-white">{proj.title}</h3>
-                  <p className="text-gray-500 text-xs leading-relaxed">{proj.desc}</p>
+                  <h3 className="text-base font-bold mt-1.5 mb-1.5 text-white">{proj.title}</h3>
+                  <p className="text-gray-600 text-xs leading-relaxed">{proj.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -174,21 +208,24 @@ export const Portfolio = () => {
         </div>
       </section>
 
-      {/* ── IFRAME MODAL ─────────────────────────────────────── */}
+      {/* ── FULLSCREEN IFRAME MODAL ───────────────────────────── */}
       <AnimatePresence>
         {active && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.22 }}
             className="fixed inset-0 z-[9000] flex flex-col"
             style={{ background: '#000' }}
           >
             {/* Top bar */}
             <div className="h-11 flex items-center justify-between px-5 bg-zinc-950 border-b border-white/[0.08] flex-shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full" style={{ background: active.accentColor }} />
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: active.accentColor }}
+                />
                 <span className="text-[0.6rem] font-semibold tracking-[0.35em] uppercase text-gray-300">
                   {active.title}
                 </span>
@@ -215,12 +252,12 @@ export const Portfolio = () => {
               </div>
             )}
 
-            {/* iframe using srcdoc — no server files needed */}
+            {/* Fullscreen iframe */}
             <iframe
               key={active.title}
               srcdoc={active.srcdoc}
               title={active.title}
-              className="flex-1 w-full border-none bg-white"
+              className="flex-1 w-full border-none"
               onLoad={() => setIframeReady(true)}
               sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
             />

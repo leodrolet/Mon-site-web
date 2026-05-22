@@ -9,22 +9,25 @@
 </head>
 <body>
   <div id="root"></div>
-  
-<style>
-#__back-btn{
+  <style>
+#__back{
   position:fixed;bottom:28px;right:28px;z-index:99999;
   display:flex;align-items:center;gap:8px;
-  background:#f97316;color:#fff;border:none;
-  padding:10px 20px;border-radius:100px;
-  font-size:0.65rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;
-  cursor:pointer;box-shadow:0 4px 24px rgba(249,115,22,0.4);
+  background:#ff5500;color:#fff;border:none;
+  padding:11px 24px;border-radius:100px;
+  font-size:0.62rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 0 0 rgba(255,85,0,0.7),0 4px 28px rgba(255,85,0,0.55);
   font-family:system-ui,sans-serif;
-  transition:transform 0.2s,box-shadow 0.2s;
+  animation:__pulse 2.4s ease-in-out infinite;
 }
-#__back-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(249,115,22,0.5);}
+@keyframes __pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(255,85,0,0.7),0 4px 28px rgba(255,85,0,0.4);}
+  50%{box-shadow:0 0 0 10px rgba(255,85,0,0),0 4px 28px rgba(255,85,0,0.6);}
+}
+#__back:hover{background:#ff3300;transform:translateY(-2px);animation:none;box-shadow:0 8px 40px rgba(255,85,0,0.7);}
 </style>
-<button id="__back-btn" onclick="window.parent.postMessage('closePortfolio','*')">← Retour</button>
-
+<button id="__back" onclick="window.parent.postMessage('closePortfolio','*')">← Retour</button>
   <script>(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const i of document.querySelectorAll('link[rel="modulepreload"]'))r(i);new MutationObserver(i=>{for(const s of i)if(s.type==="childList")for(const o of s.addedNodes)o.tagName==="LINK"&&o.rel==="modulepreload"&&r(o)}).observe(document,{childList:!0,subtree:!0});function n(i){const s={};return i.integrity&&(s.integrity=i.integrity),i.referrerPolicy&&(s.referrerPolicy=i.referrerPolicy),i.crossOrigin==="use-credentials"?s.credentials="include":i.crossOrigin==="anonymous"?s.credentials="omit":s.credentials="same-origin",s}function r(i){if(i.ep)return;i.ep=!0;const s=n(i);fetch(i.href,s)}})();function My(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var uh={exports:{}},oo={},ch={exports:{}},_={};/**
  * @license React
  * react.production.min.js
