@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowUpRight } from 'lucide-react';
 
-// Bundled directly into the JS — no server file needed on any host
-import studioOneHtml from '../../public/previews/studio-one.html?raw';
+// HTML bundled at build time — works on any host, no static file deployment needed
+import studioOneHtml    from '../../public/previews/studio-one.html?raw';
 import salonGatineauHtml from '../../public/previews/salon-gatineau/index.html?raw';
+import garageGatineauHtml from '../../public/previews/garage-gatineau/standalone.html?raw';
 
 interface Project {
   num: string;
   title: string;
   type: string;
   desc: string;
-  srcdoc?: string;        // inline HTML (no server needed)
-  src?: string;           // URL fallback for built React apps
+  srcdoc: string;
   accentColor: string;
   bgFrom: string;
   bgTo: string;
@@ -25,7 +25,7 @@ const PROJECTS: Project[] = [
     type: 'Studio musical',
     desc: "Site vitrine premium pour un studio d'enregistrement professionnel à Gatineau.",
     srcdoc: studioOneHtml,
-    accentColor: '#818cf8',
+    accentColor: '#a8a6c8',
     bgFrom: '#0d0f1a',
     bgTo: '#111827',
   },
@@ -35,7 +35,7 @@ const PROJECTS: Project[] = [
     type: 'Salon esthétique',
     desc: "Expérience de luxe pour un salon d'esthétique haut de gamme. Design épuré et élégant.",
     srcdoc: salonGatineauHtml,
-    accentColor: '#d4a853',
+    accentColor: '#c4956a',
     bgFrom: '#110e08',
     bgTo: '#1a1409',
   },
@@ -44,7 +44,7 @@ const PROJECTS: Project[] = [
     title: 'Garage Gatineau',
     type: 'Garage automobile',
     desc: 'Site moderne pour un garage automobile avec présentation des services.',
-    src: '/previews/garage-gatineau/index.html',
+    srcdoc: garageGatineauHtml,
     accentColor: '#f97316',
     bgFrom: '#0f0d0b',
     bgTo: '#1a1208',
@@ -54,10 +54,19 @@ const PROJECTS: Project[] = [
 export const Portfolio = () => {
   const [active, setActive] = useState<Project | null>(null);
   const [iframeReady, setIframeReady] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  // Listen for postMessage from iframes (back button click)
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
+    function onMessage(e: MessageEvent) {
+      if (e.data === 'closePortfolio') close();
+    }
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
+  // Escape key
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') close(); }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
@@ -98,7 +107,7 @@ export const Portfolio = () => {
               <span className="text-gradient">l'expérience</span>
             </h2>
             <p className="text-gray-500 max-w-sm mx-auto text-sm leading-relaxed">
-              Trois projets réels. Cliquez sur une carte pour naviguer dans le site complet.
+              Trois projets réels. Cliquez pour naviguer dans le site complet.
             </p>
           </motion.div>
 
@@ -122,12 +131,12 @@ export const Portfolio = () => {
                   <div
                     className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                     style={{
-                      background: `radial-gradient(ellipse 80% 60% at 50% 60%, ${proj.accentColor}18 0%, transparent 70%)`,
+                      background: `radial-gradient(ellipse 80% 60% at 50% 60%, ${proj.accentColor}20 0%, transparent 70%)`,
                     }}
                   />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
                     <span
-                      className="text-[7rem] font-black leading-none opacity-[0.04] transition-opacity duration-500 group-hover:opacity-[0.07]"
+                      className="text-[7rem] font-black leading-none opacity-[0.04] transition-opacity duration-500 group-hover:opacity-[0.08]"
                       style={{ color: proj.accentColor }}
                     >
                       {proj.num}
@@ -149,7 +158,7 @@ export const Portfolio = () => {
                 </div>
 
                 {/* Info */}
-                <div className="p-5 bg-secondary/70 backdrop-blur-sm">
+                <div className="p-5 bg-secondary/70">
                   <span
                     className="text-[0.58rem] font-semibold uppercase tracking-[0.28em]"
                     style={{ color: proj.accentColor }}
@@ -206,14 +215,10 @@ export const Portfolio = () => {
               </div>
             )}
 
-            {/* iframe — srcdoc for standalone HTML, src for built apps */}
+            {/* iframe using srcdoc — no server files needed */}
             <iframe
-              ref={iframeRef}
               key={active.title}
-              {...(active.srcdoc
-                ? { srcdoc: active.srcdoc }
-                : { src: active.src }
-              )}
+              srcdoc={active.srcdoc}
               title={active.title}
               className="flex-1 w-full border-none bg-white"
               onLoad={() => setIframeReady(true)}
