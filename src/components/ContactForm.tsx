@@ -158,10 +158,10 @@ const ContactForm = () => {
               const hasCompany = fields.company.trim().length >= 2;
               const hasDesc    = fields.description.trim().length >= 5;
               const priceMap: Record<string, string> = {
-                'Landing Page': '899 $',
-                'Site Vitrine': '1 799 $',
-                'Site Web Complet': '3 499 $',
-                'Refonte Complète': '2 999 $',
+                'Landing Page': '999 $',
+                'Site Vitrine': '1 899 $',
+                'Site Web Complet': '3 999 $',
+                'Refonte Complète': '3 699 $',
               };
               const price = priceMap[fields.site_type] ?? 'Sur devis';
 

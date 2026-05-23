@@ -5,7 +5,7 @@ import { GlowCard } from './GlowCard';
 
 const hero = {
   name: "Landing Page",
-  price: "899",
+  price: "999",
   features: [
     "Design premium sur mesure",
     "Optimisation mobile complète",
@@ -20,7 +20,7 @@ const hero = {
 const others = [
   {
     name: "Site Vitrine",
-    price: "1 799",
+    price: "1 899",
     features: [
       "Tout inclus dans la Landing Page",
       "Jusqu'à 5 pages personnalisées",
@@ -33,7 +33,7 @@ const others = [
   },
   {
     name: "Site Web Complet",
-    price: "3 499",
+    price: "3 999",
     features: [
       "Tout inclus dans le Site Vitrine",
       "Architecture d'information avancée",
@@ -47,7 +47,7 @@ const others = [
   },
   {
     name: "Refonte Complète",
-    price: "2 999",
+    price: "3 699",
     features: [
       "Audit complet de l'existant",
       "Migration de tout le contenu",
