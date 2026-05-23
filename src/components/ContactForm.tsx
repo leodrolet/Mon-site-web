@@ -159,7 +159,7 @@ const ContactForm = () => {
               const hasDesc    = fields.description.trim().length >= 5;
               const priceMap: Record<string, string> = {
                 'Landing Page': '899 $',
-                'Site Vitrine': '1 499 $',
+                'Site Vitrine': '1 799 $',
                 'Site Web Complet': '3 499 $',
                 'Refonte Complète': '2 999 $',
               };
