@@ -6,39 +6,51 @@ interface Props {
   onOpenMentions: () => void;
 }
 
-const Footer = ({ onOpenPrivacy, onOpenMentions }: Props) => {
-  return (
-    <footer className="py-12 bg-black border-t border-white/5">
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-center md:text-left">
-            <div className="text-lg font-bold tracking-tighter mb-2">
-              NOVIO<span className="text-gradient">STUDIO</span>
-            </div>
-            <p className="text-gray-500 text-xs mb-3">
-              © 2026 Novio Studio. Tous droits réservés. · Gatineau, Québec
-            </p>
-            <p className="text-[10px] text-gray-700 uppercase tracking-widest">
-              Zones desservies&nbsp;: Gatineau · Hull · Aylmer · Ottawa · Kanata · Orléans · Outaouais
-            </p>
-          </div>
+const Footer = ({ onOpenPrivacy, onOpenMentions }: Props) => (
+  <footer className="border-t border-white/[0.06] py-10 bg-black">
+    <div className="container mx-auto px-6">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
 
-          <div className="flex gap-6">
-            <a href="#" aria-label="GitHub" className="text-gray-500 hover:text-white transition-colors"><Github size={18} /></a>
-            <a href="#" aria-label="LinkedIn" className="text-gray-500 hover:text-white transition-colors"><Linkedin size={18} /></a>
-            <a href="#contact" aria-label="Envoyer un email" className="text-gray-500 hover:text-white transition-colors"><Mail size={18} /></a>
+        {/* Brand */}
+        <div>
+          <div className="text-base font-black tracking-[-0.03em] mb-1">
+            NOVIO<span className="text-accent">STUDIO</span>
           </div>
-
-          <div className="flex flex-wrap justify-center gap-4 text-[10px] font-medium text-gray-600 uppercase tracking-widest">
-            <a href="#home" className="hover:text-white transition-colors">Accueil</a>
-            <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-            <button onClick={onOpenPrivacy} className="hover:text-white transition-colors">Confidentialité</button>
-            <button onClick={onOpenMentions} className="hover:text-white transition-colors">Mentions légales</button>
-          </div>
+          <p className="text-[11px] text-gray-700">
+            © 2026 · Gatineau, Québec
+          </p>
         </div>
+
+        {/* Social */}
+        <div className="flex items-center gap-5">
+          <a href="#" aria-label="GitHub" className="text-gray-700 hover:text-gray-400 transition-colors">
+            <Github size={17} />
+          </a>
+          <a href="#" aria-label="LinkedIn" className="text-gray-700 hover:text-gray-400 transition-colors">
+            <Linkedin size={17} />
+          </a>
+          <a href="#contact" aria-label="Email" className="text-gray-700 hover:text-gray-400 transition-colors">
+            <Mail size={17} />
+          </a>
+        </div>
+
+        {/* Legal + nav */}
+        <div className="flex flex-wrap items-center justify-center gap-5 text-[11px] text-gray-700">
+          <a href="#home" className="hover:text-gray-400 transition-colors">Accueil</a>
+          <a href="#contact" className="hover:text-gray-400 transition-colors">Contact</a>
+          <button onClick={onOpenPrivacy} className="hover:text-gray-400 transition-colors">Confidentialité</button>
+          <button onClick={onOpenMentions} className="hover:text-gray-400 transition-colors">Mentions légales</button>
+        </div>
+
       </div>
-    </footer>
-  );
-};
+
+      <div className="mt-8 pt-6 border-t border-white/[0.04]">
+        <p className="text-[10px] text-gray-800 text-center uppercase tracking-[0.2em]">
+          Zones desservies · Gatineau · Hull · Aylmer · Ottawa · Kanata · Orléans · Outaouais
+        </p>
+      </div>
+    </div>
+  </footer>
+);
 
 export default Footer;

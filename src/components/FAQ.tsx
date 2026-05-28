@@ -25,57 +25,74 @@ export const FAQ = () => {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 relative">
-      <div className="container mx-auto px-6 max-w-3xl">
+    <section id="faq" className="py-32 border-t border-white/[0.06]">
+      <div className="container mx-auto px-6">
+
+        {/* Eyebrow */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="flex items-center gap-3 mb-16"
         >
-          <span className="text-[0.65rem] font-semibold text-accent uppercase tracking-[0.5em] mb-5 block">
-            Questions fréquentes
-          </span>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Tout ce que vous voulez <span className="text-gradient">savoir</span>
-          </h2>
+          <span className="text-[10px] font-mono text-gray-600 uppercase tracking-[0.3em]">06</span>
+          <span className="flex-1 h-px bg-white/[0.06]" />
+          <span className="text-[10px] font-mono text-gray-600 uppercase tracking-[0.3em]">FAQ</span>
         </motion.div>
 
-        <div className="space-y-3">
-          {QUESTIONS.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
+        <div className="grid md:grid-cols-2 gap-16 items-start">
+
+          {/* Left */}
+          <div className="md:sticky md:top-28">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.07, duration: 0.45 }}
-              className="border border-white/[0.07] rounded-xl overflow-hidden"
+              className="text-[clamp(2rem,5vw,3.5rem)] font-black tracking-[-0.03em] leading-[1.05]"
             >
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/[0.03] transition-colors duration-200"
+              Tout ce que vous voulez{' '}
+              <span className="text-gradient">savoir</span>
+            </motion.h2>
+          </div>
+
+          {/* Right — accordion */}
+          <div className="divide-y divide-white/[0.06]">
+            {QUESTIONS.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06, duration: 0.4 }}
               >
-                <span className="text-sm md:text-base font-semibold text-white pr-4">{item.q}</span>
-                <span className="flex-shrink-0 text-accent">
-                  {open === i ? <Minus size={16} /> : <Plus size={16} />}
-                </span>
-              </button>
-              <AnimatePresence initial={false}>
-                {open === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.28, ease: 'easeInOut' }}
-                    className="overflow-hidden"
-                  >
-                    <p className="px-6 pb-5 text-gray-400 text-sm leading-relaxed">{item.a}</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                <button
+                  onClick={() => setOpen(open === i ? null : i)}
+                  className="w-full flex items-start justify-between gap-4 py-5 text-left group"
+                >
+                  <span className="text-sm font-semibold text-white group-hover:text-accent transition-colors duration-200 leading-snug">
+                    {item.q}
+                  </span>
+                  <span className="flex-shrink-0 mt-0.5 text-gray-600 group-hover:text-accent transition-colors">
+                    {open === i ? <Minus size={15} /> : <Plus size={15} />}
+                  </span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {open === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <p className="pb-5 text-gray-500 text-sm leading-relaxed">{item.a}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+
         </div>
       </div>
     </section>
