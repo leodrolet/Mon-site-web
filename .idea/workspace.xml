@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d90ceb1b-7a57-4f53-bb54-fe7386eec621" name="Changes" comment="feat: orange color scheme + fix process timeline line" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;leodrolet&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/leodrolet/Mon-site-web.git&quot;,
+    &quot;accountId&quot;: &quot;22c22525-26b9-4a78-85f4-db6b8de46a39&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="3DwmtIQpi4QQm41NYnF59iroFfC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.generateur_diagramme.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/leodrolet/Site_web/Mon-site-web&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-3944b0c99280-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.30387.127" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d90ceb1b-7a57-4f53-bb54-fe7386eec621" name="Changes" comment="feat: orange color scheme + fix process timeline line" />
+      <created>1779201719557</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1779201719557</updated>
+    </task>
+    <task id="LOCAL-00051" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779333101808</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1779333101809</updated>
+    </task>
+    <task id="LOCAL-00052" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779333378762</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1779333378762</updated>
+    </task>
+    <task id="LOCAL-00053" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779333580436</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1779333580436</updated>
+    </task>
+    <task id="LOCAL-00054" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779333903530</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1779333903531</updated>
+    </task>
+    <task id="LOCAL-00055" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779334549747</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1779334549748</updated>
+    </task>
+    <task id="LOCAL-00056" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779360669791</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1779360669791</updated>
+    </task>
+    <task id="LOCAL-00057" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779404844271</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1779404844271</updated>
+    </task>
+    <task id="LOCAL-00058" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779405074838</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1779405074838</updated>
+    </task>
+    <task id="LOCAL-00059" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779405704897</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1779405704897</updated>
+    </task>
+    <task id="LOCAL-00060" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779405885985</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1779405885985</updated>
+    </task>
+    <task id="LOCAL-00061" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779406002217</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1779406002217</updated>
+    </task>
+    <task id="LOCAL-00062" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779406205608</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1779406205609</updated>
+    </task>
+    <task id="LOCAL-00063" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779406362410</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1779406362410</updated>
+    </task>
+    <task id="LOCAL-00064" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779407591668</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1779407591668</updated>
+    </task>
+    <task id="LOCAL-00065" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779408185790</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1779408185790</updated>
+    </task>
+    <task id="LOCAL-00066" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779417870970</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1779417870970</updated>
+    </task>
+    <task id="LOCAL-00067" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779418053065</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1779418053065</updated>
+    </task>
+    <task id="LOCAL-00068" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779418441160</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1779418441160</updated>
+    </task>
+    <task id="LOCAL-00069" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779418566306</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1779418566306</updated>
+    </task>
+    <task id="LOCAL-00070" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779418920262</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1779418920262</updated>
+    </task>
+    <task id="LOCAL-00071" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779427502672</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1779427502672</updated>
+    </task>
+    <task id="LOCAL-00072" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779489384630</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1779489384630</updated>
+    </task>
+    <task id="LOCAL-00073" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779489396330</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1779489396330</updated>
+    </task>
+    <task id="LOCAL-00074" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779489398698</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1779489398698</updated>
+    </task>
+    <task id="LOCAL-00075" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779489403102</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1779489403103</updated>
+    </task>
+    <task id="LOCAL-00076" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779489452699</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1779489452699</updated>
+    </task>
+    <task id="LOCAL-00077" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779489790161</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1779489790161</updated>
+    </task>
+    <task id="LOCAL-00078" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779490179752</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1779490179752</updated>
+    </task>
+    <task id="LOCAL-00079" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779490590370</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1779490590370</updated>
+    </task>
+    <task id="LOCAL-00080" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779490777957</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1779490777957</updated>
+    </task>
+    <task id="LOCAL-00081" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779497810463</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1779497810463</updated>
+    </task>
+    <task id="LOCAL-00082" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779498038091</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1779498038091</updated>
+    </task>
+    <task id="LOCAL-00083" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779498180506</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1779498180506</updated>
+    </task>
+    <task id="LOCAL-00084" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779511240645</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1779511240645</updated>
+    </task>
+    <task id="LOCAL-00085" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779514004500</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1779514004500</updated>
+    </task>
+    <task id="LOCAL-00086" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779514038795</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1779514038795</updated>
+    </task>
+    <task id="LOCAL-00087" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779514514910</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1779514514910</updated>
+    </task>
+    <task id="LOCAL-00088" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779934002263</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1779934002263</updated>
+    </task>
+    <task id="LOCAL-00089" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779934670916</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1779934670916</updated>
+    </task>
+    <task id="LOCAL-00090" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779935309762</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1779935309762</updated>
+    </task>
+    <task id="LOCAL-00091" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779936376235</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1779936376235</updated>
+    </task>
+    <task id="LOCAL-00092" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779936827089</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1779936827090</updated>
+    </task>
+    <task id="LOCAL-00093" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779942546701</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1779942546701</updated>
+    </task>
+    <task id="LOCAL-00094" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779942889702</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1779942889702</updated>
+    </task>
+    <task id="LOCAL-00095" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779943009579</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1779943009579</updated>
+    </task>
+    <task id="LOCAL-00096" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779943308467</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1779943308468</updated>
+    </task>
+    <task id="LOCAL-00097" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779944154409</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1779944154409</updated>
+    </task>
+    <task id="LOCAL-00098" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779996807789</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1779996807789</updated>
+    </task>
+    <task id="LOCAL-00099" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1779997420793</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1779997420793</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="pakage" />
+    <MESSAGE value="paka" />
+    <MESSAGE value="feat: orange color scheme + fix process timeline line" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: orange color scheme + fix process timeline line" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
