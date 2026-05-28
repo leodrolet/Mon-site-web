@@ -1,0 +1,420 @@
+/* ============================================================
+   sections.jsx — Nav, Hero, Marquee, Services, Process,
+                  Portfolio, About, FAQ, Final CTA, Footer
+   ============================================================ */
+
+const { useReveal, WordReveal, HeroCanvas, HeroVideo, useScrolled, useClock } = window;
+
+// Helper component so we can call useReveal once per item without breaking Rules of Hooks in .map()
+const RevealItem = ({ as: Tag = "div", className = "", style = {}, delay = 0, children, onClick }) => {
+  const ref = useReveal();
+  return (
+    <Tag ref={ref} className={`reveal ${className}`} style={{ transitionDelay: `${delay}ms`, ...style }} onClick={onClick}>
+      {children}
+    </Tag>);
+
+};
+
+// ====================== NAV ======================
+const Nav = ({ headline }) => {
+  const scrolled = useScrolled(40);
+  const clock = useClock();
+  return (
+    <nav className={`nav ${scrolled ? "scrolled" : ""}`} style={{ opacity: "1" }}>
+      <a href="#top" className="brand">
+        <span className="dot"></span>
+        novio<span style={{ fontStyle: "italic", color: "var(--ink-2)" }}>.studio</span>
+      </a>
+      <div className="nav-links">
+        <a href="#services">Services</a>
+        <a href="#process">Méthode</a>
+        <a href="#travaux">Travaux</a>
+        <a href="#studio">Studio</a>
+        <a href="#devis">Devis</a>
+      </div>
+      <div className="nav-right">
+        <a className="btn" href="#devis" style={{ padding: "10px 16px" }}>
+          Démarrer <span className="arrow">→</span>
+        </a>
+      </div>
+    </nav>);
+
+};
+
+// ====================== HERO ======================
+const Hero = ({ headline, accent, shape }) => {
+  // Build the hero title from the headline tweak.
+  // Default: "Expérience captivante et réfléchie"
+  // We'll wrap *italic* and **accent** tokens via WordReveal.
+  // For display we hand-format with our own line breaks for big drama.
+  const tokens = React.useMemo(() => {
+    const words = (headline || "Expérience captivante et réfléchie").trim().split(/\s+/);
+    // Default styling: italicize every other "key" word to feel editorial.
+    // If headline has explicit *...* / **...** markers, respect them via WordReveal logic.
+    return words;
+  }, [headline]);
+
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const words = el.querySelectorAll(".word");
+    // Start reveal immediately on mount (hero is in view).
+    const timeouts = [];
+    words.forEach((w, i) => {
+      timeouts.push(setTimeout(() => w.classList.add("in"), 200 + i * 90));
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, [headline]);
+
+  return (
+    <div className="hero-scroll">
+    <header className="hero" id="top">
+      <HeroVideo />
+
+      {/* Big title */}
+      <div className="hero-body">
+        <h1 className="hero-title" ref={ref}>
+          {tokens.map((tok, i) => {// Token markup: **word** = accent, *word* = italic
+                let kind = "plain";let display = tok;
+                if (tok.startsWith("**") && tok.endsWith("**")) {kind = "accent";display = tok.slice(2, -2);} else
+                if (tok.startsWith("*") && tok.endsWith("*")) {kind = "italic";display = tok.slice(1, -1);}
+                return (
+                  <React.Fragment key={i}>
+                <span className={`word ${kind === "italic" ? "italic" : ""} ${kind === "accent" ? "accent" : ""}`}>
+                  {display}
+                </span>
+                {i < tokens.length - 1 ? " " : ""}
+              </React.Fragment>);
+
+              })}
+        </h1>
+      </div>
+
+      {/* Bottom row */}
+      <div className="hero-foot">
+        <p className="lead">
+          Studio web freelance pour les PME d'<em>ici</em>. Des sites pensés ligne par ligne — livrés en 7 à 28 jours, sans agence, sans gabarit.
+        </p>
+        <div className="row gap-3">
+          <a className="btn btn-accent" href="#devis">Démarrer un projet <span className="arrow">→</span></a>
+          <a className="btn" href="#travaux">Voir les travaux</a>
+        </div>
+        <div className="mono" style={{ fontSize: 11, color: "var(--mute)", letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "right" }}>
+          Disponible
+        </div>
+      </div>
+
+      <div className="scroll-hint">
+        <span className="bar"></span>
+        Faire défiler
+      </div>
+    </header>
+    </div>);
+
+};
+
+// ====================== MARQUEE ======================
+const MarqueeRow = ({ items, reverse = false }) =>
+<div className={`marquee ${reverse ? "reverse" : ""}`} style={{ borderRadius: "0px" }}>
+    <div className="marquee-track">
+      {[0, 1].map((k) =>
+    <span key={k}>
+          {items.map((it, i) =>
+      <React.Fragment key={i}>
+              <span>{it}</span>
+              <span className="star">✦</span>
+            </React.Fragment>
+      )}
+        </span>
+    )}
+    </div>
+  </div>;
+
+
+// ====================== SECTION HEAD ======================
+const SectionHead = ({ num, kicker, title, right }) => {
+  const ref = useReveal();
+  return (
+    <div className="section-head reveal" ref={ref}>
+      <div className="section-num">
+        <span>§ {num} — {kicker}</span>
+        {right && <span>{right}</span>}
+      </div>
+      <h2 className="section-title">{title}</h2>
+    </div>);
+
+};
+
+// ====================== SERVICES ======================
+const SERVICES = [
+{
+  n: "01",
+  title: "Landing Page",
+  subtitle: "Un message · une page · une conversion.",
+  desc: "Quand tu veux frapper fort et vite. Une page taillée pour transformer le visiteur en client. Hébergement, perf, formulaire — tout est inclus.",
+  items: ["Design sur mesure", "Mobile parfait", "Formulaire intégré", "Hébergement & SSL", "Vitesse maximale", "2 révisions"],
+  price: "999",
+  delay: "7 jours"
+},
+{
+  n: "02",
+  title: "Site Vitrine",
+  subtitle: "Cinq pages. Cinq portes d'entrée.",
+  desc: "Pour les artisans, restos, cliniques, services pros. Architecture claire, SEO local, design 100% sur mesure. Le standard, mais en mieux.",
+  items: ["Jusqu'à 5 pages", "SEO par page", "Design sur mesure", "3 révisions", "Support 30 jours", "Carte / formulaire"],
+  price: "1\u202F899",
+  delay: "2–3 semaines"
+},
+{
+  n: "03",
+  title: "Refonte Complète",
+  subtitle: "Tu gardes ton SEO. On change tout le reste.",
+  desc: "Site lent, daté, invisible sur Google ? On audite, on migre, on redirige proprement. Tu gagnes 10× en vitesse — sans perdre une miette de ton classement.",
+  items: ["Audit complet", "Redirections 301", "Migration de contenu", "Core Web Vitals", "Formation incluse", "Support 30 jours"],
+  price: "3\u202F699",
+  delay: "2–4 semaines"
+},
+{
+  n: "04",
+  title: "Site Complet",
+  subtitle: "L'arsenal pour une PME qui scale.",
+  desc: "CMS pour modifier ton contenu, blog, intégrations avancées (formulaires, calendriers, cartes, paiements). Quand le site devient un outil business.",
+  items: ["CMS sur mesure", "Blog ou portfolio", "Intégrations API", "SEO avancé", "Architecture scalable", "Support 60 jours"],
+  price: "3\u202F999",
+  delay: "2–3 semaines"
+}];
+
+
+const Services = () =>
+<section className="section" id="services">
+    <SectionHead num="01" kicker="Services" title={<>Quatre offres. <em style={{ fontStyle: "italic", color: "var(--ink-2)" }}>Zéro flou.</em></>} right="Tarifs ferme · devis 24h" />
+    <div className="service-stack">
+      {SERVICES.map((s) =>
+    <article className="service-card" key={s.n}>
+          <div className="idx">{s.n} / 04</div>
+          <div>
+            <h3>{s.title}<br /><em>{s.subtitle}</em></h3>
+            <p className="desc">{s.desc}</p>
+            <ul>{s.items.map((it) => <li key={it}>{it}</li>)}</ul>
+            <a href="#devis" className="btn cta" style={{ marginTop: 28 }}>
+              Choisir cette offre <span className="arrow">→</span>
+            </a>
+          </div>
+          <div className="price-block">
+            <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--mute)", textTransform: "uppercase" }}>à partir de</div>
+            <div className="price">{s.price}<span style={{ fontSize: "0.4em", color: "var(--ink-2)", marginLeft: 6 }}>$</span></div>
+            <div className="delay">Livré en {s.delay}</div>
+          </div>
+        </article>
+    )}
+    </div>
+  </section>;
+
+
+// ====================== PROCESS ======================
+const STEPS = [
+{ d: "Jour 1", t: "Brief", desc: "Appel de 30 min. On comprend ton business, ton public, ta voix." },
+{ d: "Jour 3", t: "Maquette", desc: "Direction visuelle dans Figma. Une ou deux révisions, pas dix." },
+{ d: "Jour 5–10", t: "Build", desc: "On code, optimise, intègre. Tu suis l'avancée sur un lien live." },
+{ d: "Jour 14", t: "Live", desc: "Mise en ligne. Formation 1h. 30 jours de support inclus." }];
+
+
+const Process = () =>
+<section className="section" id="process">
+    <SectionHead num="02" kicker="Méthode" title={<>Quatre étapes. <em style={{ fontStyle: "italic", color: "var(--ink-2)" }}>Zéro friction.</em></>} right="Délais signés au contrat" />
+    <div className="process-grid">
+      {STEPS.map((s, i) =>
+    <RevealItem key={i} className="process-step" delay={i * 80}>
+          <div className="step-num">0{i + 1}</div>
+          <h4>{s.t}</h4>
+          <p>{s.desc}</p>
+          <div className="day">{s.d}</div>
+        </RevealItem>
+    )}
+    </div>
+  </section>;
+
+
+// ====================== PORTFOLIO — FOUNDER SLOTS ======================
+const SLOTS = [
+{ n: "01", status: "Disponible", title: "Restaurant ou café", sub: "— prochain projet 2026", deal: "−20% fondateur" },
+{ n: "02", status: "Disponible", title: "Clinique ou cabinet", sub: "— santé / pro services", deal: "−20% fondateur" },
+{ n: "03", status: "Disponible", title: "Artisan ou boutique", sub: "— commerce local", deal: "−20% fondateur" },
+{ n: "04", status: "Disponible", title: "Service B2B local", sub: "— immobilier / juridique / autre", deal: "−20% fondateur" }];
+
+
+const Portfolio = () =>
+<section className="section" id="travaux">
+    <SectionHead
+    num="03"
+    kicker="Travaux"
+    title={<>Le studio est <em style={{ fontStyle: "italic", color: "var(--ink-2)" }}>tout neuf.</em></>}
+    right="Cohorte fondateur · 04 places" />
+  
+    <RevealItem className="founders-banner">
+      <div className="big">Quatre places · réservées aux PME fondatrices.</div>
+      <div>20% off · listés en première page · pour la vie.</div>
+    </RevealItem>
+    <div className="portfolio">
+      {SLOTS.map((s, i) =>
+    <RevealItem
+      key={s.n}
+      as="article"
+      className="slot"
+      delay={i * 100}
+      onClick={() => {document.getElementById('devis')?.scrollIntoView({ behavior: 'smooth' });}}>
+      
+          <div className="slot-top">
+            <span className="slot-num">SLOT {s.n} / 04</span>
+            <span className="status">{s.status}</span>
+          </div>
+          <h4>{s.title}<br /><em>{s.sub}</em></h4>
+          <div className="slot-bottom">
+            <span style={{ color: "var(--mute)" }}>↳ réclamer cette place</span>
+            <span className="deal">{s.deal}</span>
+          </div>
+        </RevealItem>
+    )}
+    </div>
+    <div style={{ padding: "40px var(--gutter) 0", textAlign: "center" }}>
+      <p className="mono" style={{ fontSize: 12, color: "var(--mute)", letterSpacing: "0.1em", textTransform: "uppercase", margin: 0 }}>
+        Aucun projet à montrer encore — c'est la vérité. Tu seras peut-être le premier dans la galerie.
+      </p>
+    </div>
+  </section>;
+
+
+// ====================== ABOUT ======================
+const AboutBody = () => {
+  const ref = useReveal();
+  return (
+    <div className="about-body reveal" ref={ref}>
+      <p>
+        Bonjour. Je suis <em>Léo</em>. J'ai monté ce studio à Gatineau pour une raison simple : les PME d'ici méritent des sites à la hauteur de leur travail.
+      </p>
+      <p>
+        Pas un template <em>recyclé.</em> Pas une agence à 50K. Du sur-mesure, livré en quelques semaines, par la personne qui te répond au téléphone.
+      </p>
+      <div className="small">
+        Je design. Je code. Je livre. Et je reste 30 à 60 jours après le launch pour que tu sois autonome. Tu parles directement avec celui qui pousse le code en prod — pas un compte d'agence.
+      </div>
+      <div className="stack">
+        {["Next.js", "React", "GSAP", "Three.js", "Webflow", "Sanity CMS", "Figma", "SEO local", "Core Web Vitals", "Tailwind"].map((t) => <span key={t} className="tag">{t}</span>)}
+      </div>
+    </div>);
+
+};
+
+const About = () => {
+  const ref = useReveal();
+  return (
+    <section className="section" id="studio">
+      <SectionHead num="04" kicker="Studio" title="Un humain. Pas une agence." right="Gatineau, QC" />
+      <div className="about">
+        <div className="about-portrait reveal" ref={ref}>
+          <div className="caption">
+            <span>NOVIO</span>
+            <span>2026.05</span>
+          </div>
+          <div className="ph">Portrait — atelier maison · Hull</div>
+        </div>
+        <AboutBody />
+      </div>
+    </section>);
+
+};
+
+// ====================== FAQ ======================
+const FAQS = [
+{ q: "C'est quoi la différence avec WordPress ou Wix ?", a: "Vitesse et contrôle. WordPress/Wix ajoutent 200+ requêtes et plugins qui ralentissent le site et coûtent en hébergement. Je code chaque ligne — résultat : un site qui charge en 0.9s, et qui te ressemble vraiment." },
+{ q: "Tu héberges aussi le site ?", a: "Oui — hébergement premium inclus la première année (Vercel ou équivalent). Domaine séparé. Ensuite, ~120$/an si tu veux que je continue, ou je te transfère le tout." },
+{ q: "Et si j'ai déjà un logo ou une identité visuelle ?", a: "Parfait — je travaille avec. Si tu n'en as pas, on peut en créer une minimaliste ensemble dans le cadre du projet, ou je te recommande un graphiste de la région." },
+{ q: "Travailles-tu à distance ou en personne ?", a: "Les deux. Premier appel en visio ou en personne (café offert à Gatineau ou Ottawa). Build à distance avec liens live. Formation finale en personne si tu préfères." },
+{ q: "Et si je veux modifier le site moi-même après ?", a: "Avec l'offre Site Complet, tu reçois un CMS pour tout modifier sans toucher au code. Avec les autres offres, modifications mineures incluses 30 jours, puis 75$/h après." }];
+
+
+const FAQ = () => {
+  const [open, setOpen] = React.useState(null);
+  return (
+    <section className="section" id="faq">
+      <SectionHead num="05" kicker="FAQ" title="Questions fréquentes." right="↑ cliquer pour ouvrir" />
+      <div className="faq">
+        {FAQS.map((f, i) =>
+        <div key={i} className={`faq-item ${open === i ? "open" : ""}`} onClick={() => setOpen(open === i ? null : i)}>
+            <div className="faq-q">
+              <span>{f.q}</span><span className="plus">+</span>
+            </div>
+            <div className="faq-a">{f.a}</div>
+          </div>
+        )}
+      </div>
+    </section>);
+
+};
+
+// ====================== FINAL CTA ======================
+const FinalCTA = () => {
+  const ref = useReveal();
+  return (
+    <section className="final-cta" id="cta-final">
+      <div className="reveal" ref={ref}>
+        <div className="huge">
+          Prochain projet — <em>le tien.</em>
+        </div>
+        <div className="actions">
+          <a className="btn btn-accent" href="#devis">Réserver mon créneau <span className="arrow">→</span></a>
+          <a className="btn" href="mailto:hello@novio.studio">hello@novio.studio</a>
+        </div>
+        <div className="small">Premier appel · 15 min · gratuit · café offert si à Gatineau / Ottawa</div>
+      </div>
+    </section>);
+
+};
+
+// ====================== FOOTER ======================
+const Footer = () =>
+<>
+    <footer className="footer">
+      <div className="brand-big">
+        novio<em>.studio</em>
+      </div>
+      <div>
+        <h6>Studio</h6>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#process">Méthode</a></li>
+          <li><a href="#travaux">Travaux</a></li>
+          <li><a href="#studio">À propos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h6>Contact</h6>
+        <ul>
+          <li><a href="mailto:hello@novio.studio">hello@novio.studio</a></li>
+          <li>Gatineau · QC</li>
+          <li>+1 (819) 000-0000</li>
+        </ul>
+      </div>
+      <div>
+        <h6>Suivre</h6>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Are.na</a></li>
+          <li><a href="#">Dribbble</a></li>
+        </ul>
+      </div>
+    </footer>
+    <div className="footer-bot">
+      <span>© 2026 Novio Studio</span>
+      <span>Conçu et codé à Gatineau, QC</span>
+      <span>v1.0 · cohorte fondateur</span>
+    </div>
+  </>;
+
+
+Object.assign(window, {
+  Nav, Hero, MarqueeRow, SectionHead, Services, Process,
+  Portfolio, About, FAQ, FinalCTA, Footer
+});
