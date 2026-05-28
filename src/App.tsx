@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import VideoScrubSection from './components/VideoScrubSection';
 import { About, Services } from './components/AboutServices';
 import WhyLandingPage from './components/WhyLandingPage';
 import BeforeAfter from './components/BeforeAfter';
@@ -47,6 +48,7 @@ function App() {
         <Navbar />
         <main>
           <Hero />
+          <VideoScrubSection />
           <WhyLandingPage />
           <BeforeAfter />
           <Portfolio />
