@@ -24,38 +24,37 @@ const steps = [
 ];
 
 const Process = () => (
-  <section id="process" className="py-32 bg-black border-t border-white/[0.06]">
-    <div className="container mx-auto px-6">
+  <section id="process" className="py-32 bg-primary border-t border-white/[0.06]">
+    <div className="container mx-auto px-6 lg:px-12">
 
       {/* Eyebrow */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="flex items-center gap-3 mb-16"
+        className="flex items-center gap-4 mb-16"
       >
-        <span className="text-[10px] font-mono text-gray-600 uppercase tracking-[0.3em]">04</span>
+        <span className="font-mono text-[10px] text-[#444] tracking-[0.3em]">04</span>
         <span className="flex-1 h-px bg-white/[0.06]" />
-        <span className="text-[10px] font-mono text-gray-600 uppercase tracking-[0.3em]">Processus</span>
+        <span className="font-mono text-[10px] text-[#444] uppercase tracking-[0.3em]">Processus</span>
       </motion.div>
 
       {/* Header */}
-      <div className="grid md:grid-cols-2 gap-8 mb-20">
+      <div className="grid md:grid-cols-[7fr_5fr] gap-8 mb-20 items-end">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-[clamp(2rem,5vw,3.5rem)] font-black tracking-[-0.03em] leading-[1.05]"
+          className="font-display text-[clamp(2.2rem,5vw,4rem)] leading-[1.05] text-white"
         >
-          Comment ça{' '}
-          <span className="text-gradient">fonctionne ?</span>
+          Comment ça fonctionne ?
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-gray-500 leading-relaxed self-end"
+          className="text-[#666] text-base leading-relaxed"
         >
           Un processus simple, transparent et efficace pour passer de l'idée au résultat.
         </motion.p>
@@ -75,7 +74,7 @@ const Process = () => (
             {/* Watermark number */}
             <div
               aria-hidden
-              className="absolute bottom-4 right-6 text-[5rem] font-black leading-none text-white/[0.03] select-none pointer-events-none"
+              className="absolute bottom-4 right-6 font-display text-[5rem] leading-none text-white/[0.03] select-none pointer-events-none"
             >
               {s.n}
             </div>
@@ -85,10 +84,10 @@ const Process = () => (
                 <div className="w-8 h-8 rounded-lg border border-white/[0.08] flex items-center justify-center bg-white/[0.02]">
                   {s.icon}
                 </div>
-                <span className="text-[11px] font-mono text-gray-700 tracking-wider">{s.n}</span>
+                <span className="font-mono text-[10px] text-[#444] tracking-wider">{s.n}</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-3 tracking-tight">{s.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
+              <h3 className="font-display text-xl text-white mb-3">{s.title}</h3>
+              <p className="text-[#666] text-sm leading-relaxed">{s.desc}</p>
             </div>
           </motion.div>
         ))}

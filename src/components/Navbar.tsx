@@ -13,7 +13,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 glass py-4 transition-all duration-300">
+    <nav className="fixed top-0 w-full z-50 bg-primary border-b border-white/[0.06] py-4">
       <div className="container mx-auto px-6 flex justify-between items-center">
         <motion.div
           initial={{ opacity: 0, x: -20 }}

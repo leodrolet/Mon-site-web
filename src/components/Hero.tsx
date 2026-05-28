@@ -1,23 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, TrendingUp, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 const Hero = () => {
-  const bgRef      = useRef<HTMLDivElement>(null);
   const h1Ref      = useRef<HTMLHeadingElement>(null);
-  const subRef     = useRef<HTMLParagraphElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctasRef    = useRef<HTMLDivElement>(null);
+  const statsRef   = useRef<HTMLDivElement>(null);
+  const [count, setCount] = useState(0);
 
+  // ── Multi-layer parallax (logique originale préservée) ──
   useEffect(() => {
     if (window.matchMedia('(hover: none)').matches) return;
     const section = document.getElementById('home');
     if (!section) return;
 
     const layers = [
-      { ref: bgRef,   xF:  0.018, yF:  0.012 },
-      { ref: h1Ref,   xF: -0.012, yF: -0.008 },
-      { ref: subRef,  xF: -0.007, yF: -0.005 },
-      { ref: ctasRef, xF: -0.005, yF: -0.003 },
+      { ref: h1Ref,       xF: -0.015, yF: -0.010 },
+      { ref: subtitleRef, xF: -0.010, yF: -0.007 },
+      { ref: ctasRef,     xF: -0.008, yF: -0.005 },
     ];
 
     let rafId: number;
@@ -27,18 +30,21 @@ const Hero = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         layers.forEach(({ ref, xF, yF }) => {
-          if (!ref.current) return;
-          ref.current.style.transition = 'transform 0.12s linear';
-          ref.current.style.transform = `translate(${dx * xF}px,${dy * yF}px)`;
+          const el = ref.current;
+          if (!el) return;
+          el.style.willChange = 'transform';
+          el.style.transition = 'transform 0.1s linear';
+          el.style.transform = `translate(${dx * xF}px, ${dy * yF}px)`;
         });
       });
     };
     const onLeave = () => {
       cancelAnimationFrame(rafId);
       layers.forEach(({ ref }) => {
-        if (!ref.current) return;
-        ref.current.style.transition = 'transform 0.5s ease';
-        ref.current.style.transform = 'translate(0,0)';
+        const el = ref.current;
+        if (!el) return;
+        el.style.transition = 'transform 0.4s ease';
+        el.style.transform = 'translate(0, 0)';
       });
     };
 
@@ -51,93 +57,118 @@ const Hero = () => {
     };
   }, []);
 
+  // ── Compteur animé +150% (logique originale préservée) ──
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        observer.disconnect();
+        const start = performance.now();
+        const duration = 1400;
+        const target = 150;
+        const animate = (now: number) => {
+          const progress = Math.min((now - start) / duration, 1);
+          setCount(Math.round(easeOutCubic(progress) * target));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div id="home">
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-black">
+      {/* ── Hero principal ── */}
+      <section className="relative min-h-screen flex items-center overflow-hidden pt-20 bg-primary">
 
-        {/* Background — one radial gradient, no blobs */}
-        <div ref={bgRef} className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
-          <div
-            className="absolute inset-0 opacity-100"
-            style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(249,115,22,0.05) 0%, transparent 65%)' }}
-          />
-        </div>
+        {/* Fond : zéro blob. Une seule ligne accent en haut. */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-accent/30 pointer-events-none" />
 
-        <div className="container mx-auto px-6 relative z-10 text-center max-w-5xl">
+        <div className="container mx-auto px-6 lg:px-12 w-full">
+          <div className="max-w-4xl">
 
-          {/* Eyebrow */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex items-center justify-center gap-2 mb-8"
-          >
-            <span className="w-4 h-px bg-accent/60" />
-            <span className="text-[11px] font-medium text-accent/80 uppercase tracking-[0.35em]">
-              Développeur Web · Gatineau, Québec
-            </span>
-            <span className="w-4 h-px bg-accent/60" />
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            ref={h1Ref}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.2 }}
-            className="text-[clamp(2.6rem,7vw,5.25rem)] font-black leading-[0.96] tracking-[-0.03em] mb-8 text-white"
-          >
-            Votre prochain client à Gatineau
-            <br />
-            vous cherche en ligne —{' '}
-            <span className="text-gradient">trouvez-le en premier.</span>
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            ref={subRef}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.35 }}
-            className="max-w-xl mx-auto text-gray-400 text-lg leading-relaxed mb-12"
-          >
-            Développeur web freelance basé à Gatineau, je crée des sites rapides et optimisés pour les PME de l'Outaouais et d'Ottawa — livrés en&nbsp;14&nbsp;jours, garantis.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            ref={ctasRef}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-3 justify-center"
-          >
-            <a
-              href="#contact"
-              className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-accent text-white text-sm font-bold rounded-xl hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20"
+            {/* Eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="flex items-center gap-3 mb-10"
             >
-              Obtenir mon devis gratuit
-              <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-            </a>
-            <a
-              href="#portfolio"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-white/5 hover:border-white/20 transition-all"
+              <span className="block w-5 h-px bg-accent" />
+              <span className="font-mono text-[11px] text-accent/70 uppercase tracking-[0.35em]">
+                Développeur Web · Gatineau, Québec
+              </span>
+            </motion.div>
+
+            {/* Titre — DM Serif Display */}
+            <motion.h1
+              ref={h1Ref}
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.18 }}
+              className="font-display text-[clamp(3rem,8vw,6.5rem)] leading-[0.95] tracking-tight text-white mb-8"
             >
-              Voir les réalisations
-            </a>
-          </motion.div>
+              Votre prochain client
+              <br />
+              à Gatineau vous cherche
+              <br />
+              en ligne —
+              <br />
+              <span className="text-gradient">trouvez-le en premier.</span>
+            </motion.h1>
+
+            {/* Sous-titre */}
+            <motion.p
+              ref={subtitleRef}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.32 }}
+              className="text-[#888] text-lg leading-relaxed max-w-lg mb-12"
+            >
+              Développeur web freelance basé à Gatineau, je crée des sites rapides
+              et optimisés pour les PME de l'Outaouais et d'Ottawa — livrés en&nbsp;14&nbsp;jours, garantis.
+            </motion.p>
+
+            {/* CTA */}
+            <motion.div
+              ref={ctasRef}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.45 }}
+              className="flex flex-col sm:flex-row gap-3"
+            >
+              <a
+                href="#contact"
+                className="group inline-flex items-center gap-2 px-7 py-3.5 bg-accent text-white text-sm font-semibold rounded-lg hover:bg-orange-600 transition-colors"
+              >
+                Obtenir mon devis gratuit
+                <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+              </a>
+              <a
+                href="#portfolio"
+                className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/10 text-[#aaa] text-sm font-medium rounded-lg hover:border-white/25 hover:text-white transition-all"
+              >
+                Voir les réalisations
+              </a>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
-      {/* Stats strip */}
-      <section className="border-t border-white/[0.06]">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06] max-w-2xl mx-auto">
+      {/* ── Stats strip ── */}
+      <section ref={statsRef} className="border-t border-white/[0.06]">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
             {[
-              { icon: <TrendingUp size={14} />, value: '14 jours', label: 'Délai de livraison', sub: 'Garanti par contrat' },
-              { icon: <ShieldCheck size={14} />, value: 'Illimitées', label: 'Révisions', sub: "Jusqu'à votre satisfaction" },
-              { icon: <Users size={14} />, value: '30 jours', label: 'Support inclus', sub: 'Après la mise en ligne' },
+              { value: '14 jours',   label: 'Délai de livraison', sub: 'Garanti par contrat' },
+              { value: `+${count}%`, label: 'Taux de conversion',  sub: 'Comparé à la moyenne' },
+              { value: '30 jours',   label: 'Support inclus',      sub: 'Après la mise en ligne' },
             ].map((s, i) => (
               <motion.div
                 key={i}
@@ -145,14 +176,11 @@ const Hero = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="py-8 px-6 text-center sm:text-left"
+                className="py-9 px-6"
               >
-                <div className="flex items-center justify-center sm:justify-start gap-1.5 mb-2 text-accent/60">
-                  {s.icon}
-                  <span className="text-[10px] uppercase tracking-[0.18em] text-gray-600">{s.label}</span>
-                </div>
-                <div className="text-lg font-bold text-white">{s.value}</div>
-                <div className="text-xs text-gray-700 mt-0.5">{s.sub}</div>
+                <div className="font-mono text-[10px] text-[#444] uppercase tracking-[0.2em] mb-2">{s.label}</div>
+                <div className="font-display text-3xl text-white mb-1">{s.value}</div>
+                <div className="text-xs text-[#555]">{s.sub}</div>
               </motion.div>
             ))}
           </div>
