@@ -124,7 +124,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 .section {
   position: relative;
-  padding: clamp(80px, 12vh, 160px) 0;
+  padding: clamp(40px, 6vh, 80px) 0;
 }
 
 .divider { height: 1px; background: var(--line); width: 100%; }
@@ -441,7 +441,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   grid-template-columns: 1fr 2fr;
   gap: 32px;
   padding: 0 var(--gutter);
-  margin-bottom: clamp(40px, 6vh, 80px);
+  margin-bottom: clamp(20px, 3vh, 40px);
   align-items: end;
 }
 .section-num {
@@ -484,21 +484,74 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .reveal-words.in .w { opacity: 1; }
 
 /* ============================================================
-   Services — sticky stack
+   Services — layout with sidebar nav
    ============================================================ */
+.services-layout {
+  display: grid;
+  grid-template-columns: 172px 1fr;
+  padding: 0 var(--gutter);
+  align-items: start;
+}
+
+.services-nav {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  padding-right: 24px;
+  padding-top: 20px;
+  border-right: 1px solid var(--line-strong);
+}
+
+.svc-nav-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+}
+.svc-nav-item:first-child { border-top-color: transparent; }
+.svc-nav-item:hover { opacity: 1; }
+
+.svc-nav-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.svc-nav-title {
+  font-family: var(--display);
+  font-size: 17px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.svc-nav-price {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--mute);
+  letter-spacing: 0.06em;
+}
+
+/* Services — sticky stack */
 .service-stack {
   position: relative;
-  padding: 0 var(--gutter);
+  padding: 0 0 0 28px;
 }
 .service-card {
   position: sticky;
   top: 96px;
   background: var(--bg);
   border-top: 1px solid var(--line-strong);
-  padding: 36px 0 56px;
+  padding: 24px 0 40px;
   display: grid;
-  grid-template-columns: 100px 1fr 280px;
-  gap: 32px;
+  grid-template-columns: 80px 1fr 240px;
+  gap: 28px;
   align-items: start;
 }
 .service-card .idx {

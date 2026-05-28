@@ -33,6 +33,20 @@ const ESTIMATOR_OPTIONS = {
   ],
 };
 
+const COMPAT_PAGES = {
+  landing: ["1", "3"],
+  vitrine: ["1", "3", "5"],
+  complet: ["1", "3", "5", "10", "15+"],
+  refonte: ["1", "3", "5", "10", "15+"],
+};
+
+const COMPAT_FEATURES = {
+  landing: ["seo", "maps", "anim", "calendar", "i18n"],
+  vitrine: ["seo", "maps", "anim", "calendar", "blog", "i18n", "cms"],
+  complet: ["cms", "blog", "seo", "ecom", "calendar", "maps", "anim", "i18n"],
+  refonte: ["seo", "cms", "blog", "maps", "anim", "i18n", "calendar", "ecom"],
+};
+
 const formatPrice = (n) => {
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "\u202F");
 };
@@ -42,6 +56,16 @@ const Estimator = () => {
   const [pages, setPages] = React.useState("5");
   const [features, setFeatures] = React.useState(new Set(["seo"]));
   const [urgency, setUrgency] = React.useState("normal");
+
+  const handleTypeChange = (newType) => {
+    setType(newType);
+    const compatPages = COMPAT_PAGES[newType];
+    if (!compatPages.includes(pages)) {
+      setPages(compatPages[compatPages.length - 1]);
+    }
+    const compatFeats = COMPAT_FEATURES[newType];
+    setFeatures((prev) => new Set([...prev].filter((f) => compatFeats.includes(f))));
+  };
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [project, setProject] = React.useState("");
@@ -110,7 +134,7 @@ const Estimator = () => {
             </div>
             <div className="field-options">
               {ESTIMATOR_OPTIONS.type.map((o) => (
-                <button type="button" key={o.id} className={type === o.id ? "active" : ""} onClick={() => setType(o.id)}>
+                <button type="button" key={o.id} className={type === o.id ? "active" : ""} onClick={() => handleTypeChange(o.id)}>
                   {o.label}
                 </button>
               ))}
@@ -123,7 +147,7 @@ const Estimator = () => {
               <span className="field-help">combien de pages ?</span>
             </div>
             <div className="field-options">
-              {ESTIMATOR_OPTIONS.pages.map((o) => (
+              {ESTIMATOR_OPTIONS.pages.filter((o) => COMPAT_PAGES[type].includes(o.id)).map((o) => (
                 <button type="button" key={o.id} className={pages === o.id ? "active" : ""} onClick={() => setPages(o.id)}>
                   {o.label}
                 </button>
@@ -137,7 +161,7 @@ const Estimator = () => {
               <span className="field-help">coche celles qui s'appliquent</span>
             </div>
             <div className="field-options">
-              {ESTIMATOR_OPTIONS.features.map((o) => (
+              {ESTIMATOR_OPTIONS.features.filter((o) => COMPAT_FEATURES[type].includes(o.id)).map((o) => (
                 <button type="button" key={o.id} className={features.has(o.id) ? "active" : ""} onClick={() => toggle(o.id)}>
                   + {o.label}
                 </button>

@@ -152,8 +152,8 @@ const SERVICES = [
   n: "01",
   title: "Landing Page",
   subtitle: "Un message · une page · une conversion.",
-  desc: "Quand tu veux frapper fort et vite. Une page taillée pour transformer le visiteur en client. Hébergement, perf, formulaire — tout est inclus.",
-  items: ["Design sur mesure", "Mobile parfait", "Formulaire intégré", "Hébergement & SSL", "Vitesse maximale", "2 révisions"],
+  desc: "Page taillée pour convertir. Hébergement, formulaire et SSL — tout inclus.",
+  items: ["Design sur mesure", "Mobile parfait", "Formulaire + hébergement", "2 révisions"],
   price: "999",
   delay: "7 jours"
 },
@@ -161,8 +161,8 @@ const SERVICES = [
   n: "02",
   title: "Site Vitrine",
   subtitle: "Cinq pages. Cinq portes d'entrée.",
-  desc: "Pour les artisans, restos, cliniques, services pros. Architecture claire, SEO local, design 100% sur mesure. Le standard, mais en mieux.",
-  items: ["Jusqu'à 5 pages", "SEO par page", "Design sur mesure", "3 révisions", "Support 30 jours", "Carte / formulaire"],
+  desc: "Pour artisans, restos, cliniques. SEO local, design 100% sur mesure.",
+  items: ["Jusqu'à 5 pages", "SEO par page", "3 révisions", "Support 30 jours"],
   price: "1\u202F899",
   delay: "2–3 semaines"
 },
@@ -170,8 +170,8 @@ const SERVICES = [
   n: "03",
   title: "Refonte Complète",
   subtitle: "Tu gardes ton SEO. On change tout le reste.",
-  desc: "Site lent, daté, invisible sur Google ? On audite, on migre, on redirige proprement. Tu gagnes 10× en vitesse — sans perdre une miette de ton classement.",
-  items: ["Audit complet", "Redirections 301", "Migration de contenu", "Core Web Vitals", "Formation incluse", "Support 30 jours"],
+  desc: "Site lent ou daté ? Audit, migration propre, redirections — vitesse ×10.",
+  items: ["Audit + redirections 301", "Core Web Vitals", "Migration de contenu", "Support 30 jours"],
   price: "3\u202F699",
   delay: "2–4 semaines"
 },
@@ -179,37 +179,55 @@ const SERVICES = [
   n: "04",
   title: "Site Complet",
   subtitle: "L'arsenal pour une PME qui scale.",
-  desc: "CMS pour modifier ton contenu, blog, intégrations avancées (formulaires, calendriers, cartes, paiements). Quand le site devient un outil business.",
-  items: ["CMS sur mesure", "Blog ou portfolio", "Intégrations API", "SEO avancé", "Architecture scalable", "Support 60 jours"],
+  desc: "CMS, blog, intégrations avancées. Quand le site devient un outil business.",
+  items: ["CMS sur mesure", "Blog + intégrations API", "SEO avancé", "Support 60 jours"],
   price: "3\u202F999",
   delay: "2–3 semaines"
 }];
 
 
-const Services = () =>
-<section className="section" id="services">
-    <SectionHead num="01" kicker="Services" title={<>Quatre offres. <em style={{ fontStyle: "italic", color: "var(--ink-2)" }}>Zéro flou.</em></>} right="Tarifs ferme · devis 24h" />
-    <div className="service-stack">
-      {SERVICES.map((s) =>
-    <article className="service-card" key={s.n}>
-          <div className="idx">{s.n} / 04</div>
-          <div>
-            <h3>{s.title}<br /><em>{s.subtitle}</em></h3>
-            <p className="desc">{s.desc}</p>
-            <ul>{s.items.map((it) => <li key={it}>{it}</li>)}</ul>
-            <a href="#devis" className="btn cta" style={{ marginTop: 28 }}>
-              Choisir cette offre <span className="arrow">→</span>
-            </a>
-          </div>
-          <div className="price-block">
-            <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--mute)", textTransform: "uppercase" }}>à partir de</div>
-            <div className="price">{s.price}<span style={{ fontSize: "0.4em", color: "var(--ink-2)", marginLeft: 6 }}>$</span></div>
-            <div className="delay">Livré en {s.delay}</div>
-          </div>
-        </article>
-    )}
-    </div>
-  </section>;
+const Services = () => {
+  const scrollToService = (n) => {
+    document.getElementById(`service-${n}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <section className="section" id="services">
+      <SectionHead num="01" kicker="Services" title={<>Quatre offres. <em style={{ fontStyle: "italic", color: "var(--ink-2)" }}>Zéro flou.</em></>} right="Tarifs ferme · devis 24h" />
+      <div className="services-layout">
+        <nav className="services-nav">
+          {SERVICES.map((s) =>
+            <button key={s.n} className="svc-nav-item" onClick={() => scrollToService(s.n)}>
+              <span className="svc-nav-num">{s.n}</span>
+              <span className="svc-nav-title">{s.title}</span>
+              <span className="svc-nav-price">{s.price} $</span>
+            </button>
+          )}
+        </nav>
+        <div className="service-stack">
+          {SERVICES.map((s) =>
+            <article className="service-card" key={s.n} id={`service-${s.n}`}>
+              <div className="idx">{s.n} / 04</div>
+              <div>
+                <h3>{s.title}<br /><em>{s.subtitle}</em></h3>
+                <p className="desc">{s.desc}</p>
+                <ul>{s.items.map((it) => <li key={it}>{it}</li>)}</ul>
+                <a href="#devis" className="btn cta" style={{ marginTop: 20 }}>
+                  Choisir cette offre <span className="arrow">→</span>
+                </a>
+              </div>
+              <div className="price-block">
+                <div className="mono" style={{ fontSize: 10, letterSpacing: "0.16em", color: "var(--mute)", textTransform: "uppercase" }}>à partir de</div>
+                <div className="price">{s.price}<span style={{ fontSize: "0.4em", color: "var(--ink-2)", marginLeft: 6 }}>$</span></div>
+                <div className="delay">Livré en {s.delay}</div>
+              </div>
+            </article>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 
 // ====================== PROCESS ======================
