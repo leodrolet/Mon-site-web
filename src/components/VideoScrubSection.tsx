@@ -64,7 +64,7 @@ const VideoScrubSection = () => {
     >
       <video
         ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover opacity-60"
+        className="absolute inset-0 h-full w-full object-cover z-0"
         src="/videos/animation.mp4"
         muted
         playsInline
@@ -73,7 +73,7 @@ const VideoScrubSection = () => {
 
       <div
         ref={overlayRef}
-        className="absolute inset-0 flex items-center justify-center px-6 text-center"
+        className="absolute inset-0 z-10 flex items-center justify-center px-6 text-center pointer-events-none"
       >
         <div className="max-w-3xl">
           <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
