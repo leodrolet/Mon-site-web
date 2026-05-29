@@ -356,15 +356,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   gap: 48px;
 }
 
+/* .word animation now handled by Framer Motion (motion.span) */
 .hero-title .word {
   display: inline-block;
-  opacity: 0;
-  transform: translateY(0.4em);
   margin-right: 0.18em;
-  transition: opacity calc(0.7s / var(--anim-speed)) cubic-bezier(.2,.7,.2,1),
-              transform calc(0.7s / var(--anim-speed)) cubic-bezier(.2,.7,.2,1);
+  overflow: hidden;
+  vertical-align: bottom;
 }
-.hero-title .word.in { opacity: 1; transform: translateY(0); }
 .hero-title .word.italic { font-style: italic; color: var(--ink-2); }
 .hero-title .word.accent { color: var(--accent); }
 

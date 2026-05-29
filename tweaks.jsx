@@ -5,7 +5,7 @@
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   accent: "#ff5b2e",
-  headline: "Site Web en Outaouais C'est **NovioStudio**",
+  headline: "*Craft* web pour les **ambitieux** de l'Outaouais.",
   display: "instrument",
   theme: "dark",
   grain: 0.045,

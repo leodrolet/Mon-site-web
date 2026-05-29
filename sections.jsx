@@ -4,6 +4,7 @@
    ============================================================ */
 
 const { useReveal, WordReveal, HeroCanvas, HeroVideo, useScrolled, useClock } = window;
+const { motion: m } = window.Motion || {};
 
 // Helper component so we can call useReveal once per item without breaking Rules of Hooks in .map()
 const RevealItem = ({ as: Tag = "div", className = "", style = {}, delay = 0, children, onClick }) => {
@@ -54,18 +55,18 @@ const Hero = ({ headline, accent, shape }) => {
     return words;
   }, [headline]);
 
-  const ref = React.useRef(null);
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const words = el.querySelectorAll(".word");
-    // Start reveal immediately on mount (hero is in view).
-    const timeouts = [];
-    words.forEach((w, i) => {
-      timeouts.push(setTimeout(() => w.classList.add("in"), 200 + i * 90));
-    });
-    return () => timeouts.forEach(clearTimeout);
-  }, [headline]);
+  const titleVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.028, delayChildren: 0.1 } },
+  };
+  const wordVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.022 } },
+  };
+  const charVariants = {
+    hidden: { opacity: 0, y: "0.45em" },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+  };
 
   return (
     <div className="hero-scroll">
@@ -74,21 +75,34 @@ const Hero = ({ headline, accent, shape }) => {
 
       {/* Big title */}
       <div className="hero-body">
-        <h1 className="hero-title" ref={ref}>
-          {tokens.map((tok, i) => {// Token markup: **word** = accent, *word* = italic
-                let kind = "plain";let display = tok;
-                if (tok.startsWith("**") && tok.endsWith("**")) {kind = "accent";display = tok.slice(2, -2);} else
-                if (tok.startsWith("*") && tok.endsWith("*")) {kind = "italic";display = tok.slice(1, -1);}
-                return (
-                  <React.Fragment key={i}>
-                <span className={`word ${kind === "italic" ? "italic" : ""} ${kind === "accent" ? "accent" : ""}`}>
-                  {display}
-                </span>
-                {i < tokens.length - 1 ? " " : ""}
-              </React.Fragment>);
-
-              })}
-        </h1>
+        <m.h1
+          className="hero-title"
+          initial="hidden"
+          animate="visible"
+          variants={titleVariants}
+        >
+          {tokens.map((tok, i) => {
+            let kind = "plain"; let display = tok;
+            if (tok.startsWith("**") && tok.endsWith("**")) { kind = "accent"; display = tok.slice(2, -2); }
+            else if (tok.startsWith("*") && tok.endsWith("*")) { kind = "italic"; display = tok.slice(1, -1); }
+            return (
+              <React.Fragment key={i}>
+                <m.span
+                  className={`word ${kind === "italic" ? "italic" : ""} ${kind === "accent" ? "accent" : ""}`}
+                  style={{ display: "inline-block", overflow: "hidden", verticalAlign: "bottom" }}
+                  variants={wordVariants}
+                >
+                  {display.split("").map((char, j) => (
+                    <m.span key={j} style={{ display: "inline-block" }} variants={charVariants}>
+                      {char}
+                    </m.span>
+                  ))}
+                </m.span>
+                {i < tokens.length - 1 ? " " : ""}
+              </React.Fragment>
+            );
+          })}
+        </m.h1>
       </div>
 
       {/* Bottom row */}
@@ -205,8 +219,16 @@ const Services = () => {
           )}
         </nav>
         <div className="service-stack">
-          {SERVICES.map((s) =>
-            <article className="service-card" key={s.n} id={`service-${s.n}`}>
+          {SERVICES.map((s, i) =>
+            <m.article
+              className="service-card"
+              key={s.n}
+              id={`service-${s.n}`}
+              initial={{ opacity: 0, y: 48 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.75, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+            >
               <div className="idx">{s.n} / 04</div>
               <div>
                 <h3>{s.title}<br /><em>{s.subtitle}</em></h3>
@@ -221,7 +243,7 @@ const Services = () => {
                 <div className="price">{s.price}<span style={{ fontSize: "0.4em", color: "var(--ink-2)", marginLeft: 6 }}>$</span></div>
                 <div className="delay">Livré en {s.delay}</div>
               </div>
-            </article>
+            </m.article>
           )}
         </div>
       </div>
@@ -243,13 +265,20 @@ const Process = () =>
     <SectionHead num="02" kicker="Méthode" title={<>Quatre étapes. <em style={{ fontStyle: "italic", color: "var(--ink-2)" }}>Zéro friction.</em></>} right="Délais signés au contrat" />
     <div className="process-grid">
       {STEPS.map((s, i) =>
-    <RevealItem key={i} className="process-step" delay={i * 80}>
+        <m.div
+          key={i}
+          className="process-step"
+          initial={{ opacity: 0, x: -32 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.65, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="step-num">0{i + 1}</div>
           <h4>{s.t}</h4>
           <p>{s.desc}</p>
           <div className="day">{s.d}</div>
-        </RevealItem>
-    )}
+        </m.div>
+      )}
     </div>
   </section>;
 
@@ -276,13 +305,17 @@ const Portfolio = () =>
     </RevealItem>
     <div className="portfolio">
       {SLOTS.map((s, i) =>
-    <RevealItem
-      key={s.n}
-      as="article"
-      className="slot"
-      delay={i * 100}
-      onClick={() => {document.getElementById('devis')?.scrollIntoView({ behavior: 'smooth' });}}>
-      
+        <m.article
+          key={s.n}
+          className="slot"
+          onClick={() => { document.getElementById('devis')?.scrollIntoView({ behavior: 'smooth' }); }}
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: i * 0.09, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ y: -8, scale: 1.015, transition: { duration: 0.28, ease: "easeOut" } }}
+          style={{ cursor: "pointer" }}
+        >
           <div className="slot-top">
             <span className="slot-num">SLOT {s.n} / 04</span>
             <span className="status">{s.status}</span>
@@ -292,7 +325,7 @@ const Portfolio = () =>
             <span style={{ color: "var(--mute)" }}>↳ réclamer cette place</span>
             <span className="deal">{s.deal}</span>
           </div>
-        </RevealItem>
+        </m.article>
     )}
     </div>
     <div style={{ padding: "40px var(--gutter) 0", textAlign: "center" }}>
