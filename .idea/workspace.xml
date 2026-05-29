@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d90ceb1b-7a57-4f53-bb54-fe7386eec621" name="Changes" comment="feat: orange color scheme + fix process timeline line">
-      <change beforePath="$PROJECT_DIR$/sections.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/sections.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="d90ceb1b-7a57-4f53-bb54-fe7386eec621" name="Changes" comment="feat: orange color scheme + fix process timeline line" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,22 +59,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1779201719557</updated>
-    </task>
-    <task id="LOCAL-00071" summary="feat: orange color scheme + fix process timeline line">
-      <option name="closed" value="true" />
-      <created>1779427502672</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1779427502672</updated>
-    </task>
-    <task id="LOCAL-00072" summary="feat: orange color scheme + fix process timeline line">
-      <option name="closed" value="true" />
-      <created>1779489384630</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1779489384630</updated>
     </task>
     <task id="LOCAL-00073" summary="feat: orange color scheme + fix process timeline line">
       <option name="closed" value="true" />
@@ -454,7 +436,23 @@
       <option name="project" value="LOCAL" />
       <updated>1780024993351</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL-00120" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1780025336489</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1780025336489</updated>
+    </task>
+    <task id="LOCAL-00121" summary="feat: orange color scheme + fix process timeline line">
+      <option name="closed" value="true" />
+      <created>1780025956557</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1780025956557</updated>
+    </task>
+    <option name="localTasksCounter" value="122" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
