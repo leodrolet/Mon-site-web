@@ -6,15 +6,31 @@
 <title>Novio Studio — Expériences web pour PME d'Outaouais & Ottawa</title>
 <meta name="description" content="Studio web freelance basé à Gatineau. Sites haute-performance livrés en 7 à 28 jours. Dès 999$." />
 
-<!-- Critical fonts (Instrument Serif + Geist + JetBrains Mono) -->
+<!-- Critical CSS inline — prevents FOUC before stylesheet loads -->
+<style>
+:root{--display:"Instrument Serif","Fraunces",Georgia,serif;--sans:"Geist","Inter Tight",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--bg:#0a0a0a;--bg-2:#131313;--bg-3:#1a1a1a;--ink:#efece4;--ink-2:#b9b6ad;--mute:#6a6a64;--line:rgba(239,236,228,.10);--line-strong:rgba(239,236,228,.22);--accent:#ff5b2e;--accent-ink:#0a0a0a;--grain-opacity:.045;--anim-speed:1;--gutter:clamp(20px,4vw,64px)}
+:root[data-theme="light"]{--bg:#f0ece2;--bg-2:#e5dfd1;--bg-3:#d8d1c0;--ink:#0a0a0a;--ink-2:#2a2a2a;--accent-ink:#f0ece2}
+:root[data-display="grotesque"]{--display:"Bricolage Grotesque","Space Grotesk",sans-serif}
+:root[data-display="serif-classic"]{--display:"Cormorant Garamond","EB Garamond",serif}
+:root[data-display="display-modern"]{--display:"Fraunces",Georgia,serif}
+:root[data-display="instrument"]{--display:"Instrument Serif",Georgia,serif}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);min-height:100dvh}
+body{font-family:var(--sans)}
+main#root{min-height:100dvh}
+.grain{position:fixed;inset:0;z-index:9999;pointer-events:none;mix-blend-mode:overlay;opacity:var(--grain-opacity)}
+</style>
+
+<!-- Preload full stylesheet (non-blocking download starts immediately) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="preload" href="styles.min.css" as="style" />
+<link rel="stylesheet" href="styles.min.css" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="styles.min.css" /></noscript>
 
-<!-- Alternate display fonts — deferred, load after page paint -->
+<!-- All fonts non-blocking — fallback fonts show on first paint -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&display=optional" media="print" onload="this.media='all'" />
-
-<link rel="stylesheet" href="styles.min.css" />
 </head>
 <body>
 
