@@ -36,7 +36,7 @@ const ESTIMATOR_OPTIONS = {
 const COMPAT_PAGES = {
   landing: ["1", "3"],
   vitrine: ["1", "3", "5"],
-  complet: ["1", "3", "5", "10", "15+"],
+  complet: ["3", "5", "10", "15+"],
   refonte: ["1", "3", "5", "10", "15+"],
 };
 
