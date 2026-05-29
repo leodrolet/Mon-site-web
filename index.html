@@ -6,8 +6,7 @@
 <title>Novio Studio — Expériences web pour PME d'Outaouais & Ottawa</title>
 <meta name="description" content="Studio web freelance basé à Gatineau. Sites haute-performance livrés en 7 à 28 jours. Dès 999$." />
 
-<!-- CDN preconnects -->
-<link rel="preconnect" href="https://unpkg.com" />
+<!-- Critical fonts (Instrument Serif + Geist + JetBrains Mono) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -15,30 +14,29 @@
 <!-- Alternate display fonts — deferred, load after page paint -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;1,9..144,400&display=optional" media="print" onload="this.media='all'" />
 
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="styles.min.css" />
 </head>
 <body>
 
 <!-- Grain overlay (drawn by JS) -->
 <canvas class="grain" id="grain-canvas"></canvas>
 
-<!-- React mount -->
-<div id="root"></div>
+<!-- React mount — also the page landmark for screen readers -->
+<main id="root"></main>
 
-<!-- React 18 production builds -->
-<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+<!-- React 18 production builds (self-hosted, defer = download in parallel with HTML) -->
+<script defer src="react.min.js"></script>
+<script defer src="react-dom.min.js"></script>
 
-<!-- Grain (vanilla, runs before React) -->
+<!-- Grain canvas (runs inline, before deferred scripts) -->
 <script>
 (() => {
   const c = document.getElementById('grain-canvas');
   const ctx = c.getContext('2d', { alpha: true });
-  const SIZE = 220; // small noise tile, repeated via CSS
+  const SIZE = 220;
   c.width = SIZE; c.height = SIZE;
   c.style.width = '100vw'; c.style.height = '100vh';
   c.style.imageRendering = 'pixelated';
-  // Draw 6 noise tiles, swap every ~250ms (cheap animated grain)
   const tiles = [];
   for (let k = 0; k < 6; k++) {
     const img = ctx.createImageData(SIZE, SIZE);
@@ -59,13 +57,7 @@
 })();
 </script>
 
-<!-- App scripts (pre-compiled JSX — no runtime transpilation) -->
-<script src="dist/tweaks-panel.js"></script>
-<script src="dist/effects.js"></script>
-<script src="dist/sections.js"></script>
-<script src="dist/cinema.js"></script>
-<script src="dist/estimator.js"></script>
-<script src="dist/tweaks.js"></script>
-<script src="dist/app.js"></script>
+<!-- App bundle (pre-compiled + minified, defer = execute after React) -->
+<script defer src="dist/bundle.min.js"></script>
 </body>
 </html>

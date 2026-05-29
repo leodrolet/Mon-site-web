@@ -2,7 +2,7 @@
   "name": "novio-studio-static",
   "version": "1.0.0",
   "scripts": {
-    "build": "babel tweaks-panel.jsx effects.jsx sections.jsx cinema.jsx estimator.jsx tweaks.jsx app.jsx --out-dir dist",
+    "build": "node build.js",
     "watch": "babel tweaks-panel.jsx effects.jsx sections.jsx cinema.jsx estimator.jsx tweaks.jsx app.jsx --out-dir dist --watch"
   },
   "dependencies": {
@@ -13,6 +13,8 @@
   "devDependencies": {
     "@babel/cli": "^7.29.7",
     "@babel/core": "^7.29.7",
-    "@babel/preset-react": "^7.29.7"
+    "@babel/preset-react": "^7.29.7",
+    "clean-css-cli": "^5.6.3",
+    "terser": "^5.48.0"
   }
 }
