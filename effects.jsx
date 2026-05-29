@@ -92,13 +92,28 @@ const WordReveal = ({ text, className = "", initialDelay = 0, perWordDelay = 60,
  * Same scroll-scrub contract as the previous version: progress is
  * derived from `.hero-scroll` so the surrounding layout doesn't change.
  */
+/**
+ * HeroVideo — "Fluid Grid Tunnel"
+ *
+ * Renders a perspective floor + ceiling grid that flows continuously
+ * toward the viewer. Scroll progress drives three interconnected
+ * parameters: focal length (perspective depth), flow velocity, and
+ * the accent glow radius at the vanishing point — transitioning from
+ * a wide, ambient drift to a focused, accelerating tunnel.
+ *
+ * Geometry: two horizontal planes (floor Y=0, ceiling Y=G_H) viewed
+ * from a camera at height CAM_H. Lines are deformed by stacked sines
+ * for an organic, fluid quality. All 3D → 2D is a single-pass
+ * perspective divide (no matrix library needed).
+ *
+ * Respects prefers-reduced-motion: freezes time and flow when set.
+ */
 const HeroVideo = ({ src }) => {
   const canvasRef = React.useRef(null);
-  const scrubRef = React.useRef(0);
+  const scrubRef  = React.useRef(0);
   const [scrubProgress, setScrubProgress] = React.useState(0);
 
-  // Scroll-scrub — mirrors the previous HeroVideo contract so the
-  // sticky .hero-scroll behavior keeps working identically.
+  // ── Scroll-scrub (same contract as before) ──────────────────
   React.useEffect(() => {
     const compute = () => {
       const el = canvasRef.current;
@@ -108,8 +123,7 @@ const HeroVideo = ({ src }) => {
       const rect = scroller.getBoundingClientRect();
       const vh = window.innerHeight;
       const scrubDist = Math.max(1, scroller.offsetHeight - vh);
-      const raw = (-rect.top) / scrubDist;
-      const p = Math.max(0, Math.min(1, raw));
+      const p = Math.max(0, Math.min(1, -rect.top / scrubDist));
       scrubRef.current = p;
       setScrubProgress(p);
     };
@@ -122,146 +136,219 @@ const HeroVideo = ({ src }) => {
     };
   }, []);
 
-  // Canvas render loop.
+  // ── Canvas render loop ───────────────────────────────────────
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d", { alpha: false });
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let w = 0, h = 0;
     const resize = () => {
       const r = canvas.getBoundingClientRect();
       w = r.width; h = r.height;
-      canvas.width = Math.max(1, Math.floor(w * dpr));
+      canvas.width  = Math.max(1, Math.floor(w * dpr));
       canvas.height = Math.max(1, Math.floor(h * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
 
-    // Resolve the live --accent at draw time (it changes via tweaks).
-    const getAccent = () => {
-      const v = getComputedStyle(document.documentElement)
-        .getPropertyValue("--accent").trim();
-      return v || "#c8a878";
-    };
-    const getBg = () => {
-      const isLight = document.documentElement.getAttribute("data-theme") === "light";
-      return isLight ? "#efece4" : "#0a0908";
-    };
-    const getInk = () => {
-      const isLight = document.documentElement.getAttribute("data-theme") === "light";
-      return isLight ? "#1a1817" : "#efece4";
+    const getAccent = () =>
+      getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#ff5b2e";
+    const getBg  = () =>
+      document.documentElement.getAttribute("data-theme") === "light" ? "#efece4" : "#0a0908";
+    const getInk = () =>
+      document.documentElement.getAttribute("data-theme") === "light" ? "#1a1817" : "#efece4";
+
+    // hex / rgb(a) → rgba string with explicit alpha
+    const hexA = (col, a) => {
+      col = col.trim();
+      if (col.startsWith("#")) {
+        const n = col.length === 4
+          ? col.slice(1).split("").map(c => parseInt(c + c, 16))
+          : [parseInt(col.slice(1,3),16), parseInt(col.slice(3,5),16), parseInt(col.slice(5,7),16)];
+        return `rgba(${n[0]},${n[1]},${n[2]},${+a.toFixed(3)})`;
+      }
+      const m = col.match(/[\d.]+/g).slice(0, 3);
+      return `rgba(${m.join(",")},${+a.toFixed(3)})`;
     };
 
-    let t = 0;
-    let raf = 0;
+    // ── Grid world constants ─────────────────────────────────
+    const NEAR   = 0.28;   // closest Z plane
+    const FAR    = 22;     // farthest Z plane
+    const RANGE  = FAR - NEAR;
+    const G_W    = 3.0;    // half-width of grid (world units)
+    const G_H    = 2.2;    // ceiling height
+    const CAM_H  = 1.1;    // camera height above floor
+    const COLS   = 12;     // lateral lines (0..COLS = 13 lines)
+    const ROWS   = 26;     // cross-section rings flowing toward viewer
+
+    // Perspective project: world (wx, wy, wz) → screen (sx, sy)
+    const proj = (wx, wy, wz, vpX, vpY, fLen) => {
+      if (wz < 0.01) return null;
+      return {
+        sx: vpX + (wx / wz) * fLen,
+        sy: vpY + ((CAM_H - wy) / wz) * fLen,
+      };
+    };
+
+    // Stacked-sine organic wave — displaces Y of each grid vertex
+    const wave = (wx, wz, amp, time) =>
+      amp * (
+        Math.sin(wx * 2.0 + wz * 0.55 + time * 0.62) * 0.55 +
+        Math.sin(wx * 0.75 - wz * 1.65 - time * 0.38) * 0.30 +
+        Math.sin(wx * 4.1  + wz * 2.2  + time * 1.05) * 0.15
+      );
+
+    let t          = 0;
     let scrubEased = 0;
+    let flowOffset = 0;
+    let raf        = 0;
 
-    // Stacked-sine "noise" — cheap, deterministic, smooth.
-    const wob = (x, k) =>
-      Math.sin(x * 0.9 + k * 1.7) * 0.55 +
-      Math.sin(x * 1.7 - k * 0.4 + 2.3) * 0.30 +
-      Math.sin(x * 3.4 + k * 0.8 + 5.1) * 0.15;
+    // ── Draw one plane (floor or ceiling) ───────────────────
+    const drawPlane = (floor, vpX, vpY, fLen, flowSpd, waveAmp, baseAlpha, accent, ink, p) => {
+      const yBase   = floor ? 0 : G_H;
+      const ySign   = floor ? 1 : -1;   // wave direction mirrors for ceiling
+      const dimMul  = floor ? 1.0 : 0.5; // ceiling is subtler
 
+      // ── Cross-section rings (constant Z, advancing toward camera) ──
+      for (let ri = 0; ri < ROWS; ri++) {
+        const rawZ = NEAR + (ri / ROWS) * RANGE;
+        // Wrap Z around so rings cycle endlessly as flowOffset grows
+        const wz = ((rawZ - flowOffset) % RANGE + RANGE) % RANGE + NEAR;
+        if (wz < NEAR + 0.02) continue;
+
+        const tZ      = (wz - NEAR) / RANGE;             // 0=near, 1=far
+        const depthA  = Math.max(0, 1 - tZ * 1.05);      // closer = more opaque
+        const nearPop = Math.max(0, 1 - wz / (NEAR + 1.8)); // accent pop for very-near rings
+        const rushPop = Math.max(0, (p - 0.45) / 0.55) * Math.max(0, 1 - wz / (NEAR + 3.5));
+
+        const lineA = (baseAlpha + depthA * 0.22) * dimMul;
+        // Adaptive segments: fewer for distant rings
+        const STEPS = Math.max(10, Math.round(18 * (1 - tZ * 0.45)));
+
+        ctx.beginPath();
+        for (let ci = 0; ci <= STEPS; ci++) {
+          const wx = -G_W + (ci / STEPS) * G_W * 2;
+          const wy = yBase + ySign * wave(wx, wz, waveAmp, t);
+          const pt = proj(wx, wy, wz, vpX, vpY, fLen);
+          if (!pt) continue;
+          ci === 0 ? ctx.moveTo(pt.sx, pt.sy) : ctx.lineTo(pt.sx, pt.sy);
+        }
+
+        const accentBlend = (nearPop + rushPop) * dimMul;
+        if (accentBlend > 0.04) {
+          ctx.strokeStyle = hexA(accent, lineA * 0.5 + accentBlend * (0.32 + p * 0.38));
+        } else {
+          ctx.strokeStyle = hexA(ink, lineA);
+        }
+        ctx.lineWidth   = 0.55 + depthA * 0.7;
+        ctx.globalAlpha = 1;
+        ctx.stroke();
+      }
+
+      // ── Lateral lines (constant X, run away into depth) ──
+      const LSTEPS = 30;
+      for (let ci = 0; ci <= COLS; ci++) {
+        const wx    = -G_W + (ci / COLS) * G_W * 2;
+        const xFade = Math.max(0, 1 - Math.abs(wx / G_W) * 0.65); // center lines stronger
+
+        ctx.beginPath();
+        let first = true;
+        for (let si = 0; si <= LSTEPS; si++) {
+          const wz = NEAR + (si / LSTEPS) * (FAR - NEAR);
+          const wy = yBase + ySign * wave(wx, wz, waveAmp * 0.6, t);
+          const pt = proj(wx, wy, wz, vpX, vpY, fLen);
+          if (!pt) continue;
+          if (first) { ctx.moveTo(pt.sx, pt.sy); first = false; }
+          else ctx.lineTo(pt.sx, pt.sy);
+        }
+        ctx.strokeStyle = hexA(ink, (baseAlpha * 0.65 + xFade * 0.08) * dimMul);
+        ctx.lineWidth   = 0.45 + xFade * 0.5;
+        ctx.globalAlpha = 1;
+        ctx.stroke();
+      }
+    };
+
+    // ── Main render loop ─────────────────────────────────────
     const render = () => {
-      t += 1 / 60;
-      scrubEased += (scrubRef.current - scrubEased) * 0.12;
+      if (!reducedMotion) t += 1 / 60;
+      scrubEased += (scrubRef.current - scrubEased) * 0.09;
+      const p = scrubEased;
 
-      const ink = getInk();
-      const bg = getBg();
+      // ── Scroll-driven parameters ─────────────────────────
+      // Perspective: focal length increases → grid converges tighter at VP
+      const fLen     = h * (0.42 + p * 0.68);
+      // Flow: primary tunnel driver — slow ambient drift → screaming rush
+      const flowSpd  = reducedMotion ? 0 : (0.14 + p * 3.2);
+      // Fluid deformation amplitude grows with speed
+      const waveAmp  = reducedMotion ? 0.04 : (0.055 + p * 0.09);
+      // Vanishing point: drifts slightly upward with scroll (runway feel)
+      const vpX      = w * 0.5;
+      const vpY      = h * (0.5 - p * 0.04);
+      // Focal accent glow at VP
+      const glowR    = 40 + p * 200;
+      const glowA    = 0.32 + p * 0.6;
+      // Base grid line opacity — high enough to clearly read as a grid
+      const baseA    = 0.18 + p * 0.12;
+
+      flowOffset = (flowOffset + flowSpd / 60) % RANGE;
+
       const accent = getAccent();
+      const ink    = getInk();
+      const bg     = getBg();
 
-      // Background wash — a soft vertical gradient anchors the scene.
+      // ── Background ────────────────────────────────────────
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Horizon settles slightly above mid-screen and rises with scroll.
-      const horizon = h * (0.62 - scrubEased * 0.06);
+      // Ambient gradient toward VP (deepens with scroll)
+      const bgR = Math.hypot(w, h) * 0.62;
+      const bgG = ctx.createRadialGradient(vpX, vpY, 0, vpX, vpY, bgR);
+      bgG.addColorStop(0, hexA(accent, 0.04 + p * 0.055));
+      bgG.addColorStop(1, hexA(bg,     0));
+      ctx.fillStyle = bgG;
+      ctx.fillRect(0, 0, w, h);
 
-      // Line field. Fewer lines high up, denser near the horizon —
-      // gives a soft perspective without any 3D math.
-      const N = 64;
-      const camDrift = Math.sin(t * 0.07) * 14;
-      const zoom = 1 + scrubEased * 0.18;
+      // ── Grid planes ──────────────────────────────────────
+      drawPlane(true,  vpX, vpY, fLen, flowSpd, waveAmp, baseA, accent, ink, p); // floor
+      drawPlane(false, vpX, vpY, fLen, flowSpd, waveAmp, baseA, accent, ink, p); // ceiling
 
-      for (let i = 0; i < N; i++) {
-        const tt = i / (N - 1);                  // 0 (top) → 1 (bottom)
-        const compressed = Math.pow(tt, 1.35);   // bunch lines toward the bottom
-        const baseY = horizon + (h - horizon) * compressed;
+      // ── Focal glow at vanishing point ────────────────────
+      // Layered: tight core + broad halo — intensity spikes on scroll
+      const fg = ctx.createRadialGradient(vpX, vpY, 0, vpX, vpY, glowR);
+      fg.addColorStop(0,    hexA(accent, glowA));
+      fg.addColorStop(0.18, hexA(accent, glowA * 0.55));
+      fg.addColorStop(0.5,  hexA(accent, glowA * 0.14));
+      fg.addColorStop(1,    hexA(accent, 0));
+      ctx.fillStyle = fg;
+      ctx.fillRect(0, 0, w, h);
 
-        // Amplitude shrinks toward the horizon (depth cue).
-        const ampScale = Math.pow(1 - tt, 1.1);
-        const amp = (24 + 60 * ampScale) * zoom;
-
-        // Sample rate scales with width.
-        const step = Math.max(6, Math.round(w / 220));
-        const phase = t * (0.18 + tt * 0.6) + i * 0.13;
-
-        // Per-line opacity: thin at the horizon, present at the bottom.
-        const a = 0.04 + 0.32 * Math.pow(tt, 0.65);
-
-        ctx.beginPath();
-        for (let x = -40; x <= w + 40; x += step) {
-          const u = (x / w) * 3.4 - 1.7;
-          const wob1 = wob(u + phase * 0.4, i * 0.19 + phase * 0.2);
-          const wob2 = wob(u * 0.5 - phase * 0.13, i * 0.07 - 2.1);
-          const y = baseY + amp * 0.6 * wob1 + amp * 0.4 * wob2 + camDrift * (0.4 + tt * 0.8);
-          if (x === -40) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = ink;
-        ctx.globalAlpha = a;
-        ctx.lineWidth = 0.6 + tt * 0.8;
-        ctx.stroke();
-
-        // Accent highlight on a handful of lines near the optical centre.
-        const accentZone = 1 - Math.min(1, Math.abs(tt - 0.55) * 4.0);
-        if (accentZone > 0.4) {
-          ctx.strokeStyle = accent;
-          ctx.globalAlpha = 0.10 * (accentZone - 0.4) * (1 + scrubEased * 0.6);
-          ctx.lineWidth = 1.0;
-          ctx.stroke();
-        }
+      // Hard lens flare dot at VP when fully into the tunnel
+      if (p > 0.6) {
+        const flareA = (p - 0.6) / 0.4;
+        const fg2 = ctx.createRadialGradient(vpX, vpY, 0, vpX, vpY, 6 + flareA * 8);
+        fg2.addColorStop(0, hexA(ink,    0.6 * flareA));
+        fg2.addColorStop(1, hexA(accent, 0));
+        ctx.fillStyle = fg2;
+        ctx.fillRect(vpX - 20, vpY - 20, 40, 40);
       }
-      ctx.globalAlpha = 1;
-
-      // A faint "horizon" hairline for structure.
-      ctx.strokeStyle = ink;
-      ctx.globalAlpha = 0.12;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(0, horizon);
-      ctx.lineTo(w, horizon);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-
-      // Drifting particles — quiet dust above the horizon.
-      const P = 28;
-      ctx.fillStyle = ink;
-      for (let i = 0; i < P; i++) {
-        const seed = i * 113.97;
-        const x = ((Math.sin(seed) * 0.5 + 0.5) * w + t * (10 + (i % 5) * 3)) % (w + 60) - 30;
-        const y = horizon - ((Math.sin(seed * 1.7) * 0.5 + 0.5) * horizon) * 0.9 - 12;
-        const s = 0.6 + (i % 3) * 0.4;
-        ctx.globalAlpha = 0.10 + 0.10 * ((i % 4) / 4);
-        ctx.fillRect(x, y, s, s);
-      }
-      ctx.globalAlpha = 1;
 
       raf = requestAnimationFrame(render);
     };
-    raf = requestAnimationFrame(render);
 
+    raf = requestAnimationFrame(render);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
     };
   }, []);
 
-  // Mild scale that follows scrub progress (no translate — hero is pinned).
-  const scale = 1.02 + scrubProgress * 0.04;
+  // Subtle CSS scale tied to scroll — keeps the canvas filling the hero
+  // even at high-scroll viewport shifts without any position change.
+  const scale = 1.0 + scrubProgress * 0.028;
 
   return (
     <div className="hero-bg">
@@ -269,9 +356,10 @@ const HeroVideo = ({ src }) => {
         ref={canvasRef}
         className="webgl"
         style={{
-          transform: `scale(${scale.toFixed(3)})`,
-          transformOrigin: "50% 55%",
-        }} />
+          transform: `scale(${scale.toFixed(4)})`,
+          transformOrigin: "50% 50%",
+        }}
+      />
       <div className="hero-bg-scrim"></div>
     </div>
   );

@@ -4,10 +4,10 @@
 
 const ESTIMATOR_OPTIONS = {
   type: [
-    { id: "landing", label: "Landing Page", base: 1500, days: "7 jours" },
-    { id: "vitrine", label: "Site Vitrine", base: 2500, days: "2–3 sem." },
-    { id: "complet", label: "Site Complet", base: 4500, days: "2–3 sem." },
-    { id: "refonte", label: "Refonte", base: 4000, days: "2–4 sem." },
+    { id: "landing", label: "Landing Page", base: 999,  days: "7 jours" },
+    { id: "vitrine", label: "Site Vitrine", base: 1899, days: "2–3 sem." },
+    { id: "complet", label: "Site Complet", base: 3999, days: "2–3 sem." },
+    { id: "refonte", label: "Refonte",      base: 3699, days: "2–4 sem." },
   ],
   pages: [
     { id: "1", label: "1 page", mult: 0 },
@@ -53,8 +53,8 @@ const formatPrice = (n) => {
 
 const Estimator = () => {
   const [type, setType] = React.useState("vitrine");
-  const [pages, setPages] = React.useState("5");
-  const [features, setFeatures] = React.useState(new Set(["seo"]));
+  const [pages, setPages] = React.useState("1");
+  const [features, setFeatures] = React.useState(new Set());
   const [urgency, setUrgency] = React.useState("normal");
 
   const handleTypeChange = (newType) => {
