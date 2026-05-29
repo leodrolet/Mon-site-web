@@ -47,14 +47,13 @@ const EXTRA_OPTS = [
   { id: "maps",     label: "Carte interactive" },
   { id: "anim",     label: "Animations premium" },
   { id: "i18n",     label: "Bilingue FR/EN" },
-  { id: "ecom",     label: "Mini e-commerce" },
 ];
 
 const EXTRA_AVAILABLE = {
   landing: ["calendar", "maps", "anim", "i18n"],
-  vitrine: ["calendar", "maps", "anim", "i18n", "ecom"],
-  complet: ["calendar", "maps", "anim", "i18n", "ecom"],
-  refonte: ["calendar", "maps", "anim", "i18n", "ecom"],
+  vitrine: ["calendar", "maps", "anim", "i18n"],
+  complet: ["calendar", "maps", "anim", "i18n"],
+  refonte: ["calendar", "maps", "anim", "i18n"],
 };
 
 const URGENCY_OPTS = [
